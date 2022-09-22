@@ -2,8 +2,8 @@ import { FunctionRule, GuardRule, RouteObject } from '@/types/router';
 import { operationAttrToNodes } from '@/utils/tree';
 import { cloneDeep } from 'lodash-es';
 import React, { lazy, Suspense } from 'react';
-import { Navigate, useLocation, useRoutes } from 'react-router-dom';
-// import { useRoutes } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 
 let onRouterBefore: any;
 let RouterLoading: FunctionRule;

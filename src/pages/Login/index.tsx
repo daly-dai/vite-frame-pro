@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styles from './Login.module.less';
 import { Form, Input, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import AuthCode from './components/AuthCode';
 
 const Login = () => {
   const [form] = Form.useForm();
-  const [random, setRandom] = useState('0');
 
   const handleFormFinish = () => {
     console.log('handleFormFinish');
@@ -14,7 +12,9 @@ const Login = () => {
 
   return (
     <div className={styles.login}>
+      <div className={styles.title}>vite-frame-pro</div>
       <div className={styles.formBox}>
+        <div className={styles.formBoxTitle}>登录</div>
         {/* 手机号登陆 */}
         <Form form={form} onFinish={handleFormFinish}>
           <Form.Item
@@ -35,16 +35,6 @@ const Login = () => {
               }
             />
           </Form.Item>
-          <Form.Item
-            name="code"
-            rules={[{ required: true, message: '请输入验证码' }]}
-          >
-            <Input
-              size="large"
-              placeholder="验证码"
-              addonAfter={<AuthCode onChange={(random) => setRandom(random)} />}
-            />
-          </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
               登录
@@ -52,8 +42,6 @@ const Login = () => {
           </Form.Item>
         </Form>
       </div>
-
-      {/* <ChangePassword {...editModel} hideResetDialog={hideResetDialog}></ChangePassword> */}
     </div>
   );
 };

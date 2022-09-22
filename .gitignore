@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 /history
+/config/proxy-self.ts
 
 # Editor directories and files
 .vscode/*
