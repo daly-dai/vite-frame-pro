@@ -15,10 +15,6 @@
     "**/*.{js,jsx,tsx,ts}": [
       "npm run lint:script",
       "git add ."
-    ],
-    "**/*.{scss}": [
-      "npm run lint:style",
-      "git add ."
     ]
   },
   "dependencies": {
