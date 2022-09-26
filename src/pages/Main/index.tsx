@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import placeStore from '@/store/placeStore';
-// import { getTest } from './api';
 
 const Main = () => {
   const store = placeStore();
@@ -8,10 +7,8 @@ const Main = () => {
   useEffect(() => {
     setTimeout(() => {
       store.changeUiStyle('test');
-
-      // getTest({});
     }, 5000);
-  }, []);
+  }, [store]);
 
   return (
     <>

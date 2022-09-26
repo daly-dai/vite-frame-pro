@@ -1,6 +1,6 @@
 import { FunctionRule, GuardRule, RouteObject } from '@/types/router';
 import { operationAttrToNodes } from '@/utils/tree';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, concat } from 'lodash-es';
 import React, { lazy, Suspense } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useRoutes } from 'react-router-dom';
@@ -35,21 +35,38 @@ function lazyLoadRouters(element: any, meta = {}) {
   return Guard({ element: GetElement(), meta });
 }
 
+// 设置重定向的数据
+function setRedirectData(route: RouteObject) {
+  const stashRoute = cloneDeep(route);
+
+  if (stashRoute?.children) delete stashRoute?.children;
+
+  stashRoute['element'] = (
+    <Navigate to={route.redirect as string} replace={true} />
+  );
+
+  return stashRoute;
+}
+// 格式化相关路由
 function transRoutes(routes: RouteObject[]) {
   const stashRoutes = cloneDeep(routes);
-  const result = operationAttrToNodes(stashRoutes, (route: RouteObject) => {
-    if (route.redirect) {
-      route.element = <Navigate to={route.redirect} replace={true} />;
-    }
+  const redirectList: RouteObject[] = [];
 
+  const result = operationAttrToNodes(stashRoutes, (route: RouteObject) => {
     if (route.element) {
       route.element = lazyLoadRouters(route.element, route.meta);
+    }
+
+    if (route.redirect) {
+      const redirectItem = setRedirectData(route);
+
+      redirectList.push(redirectItem);
     }
 
     ['redirect', 'parentId'].forEach((name) => delete route[name]);
   });
 
-  return result;
+  return concat(redirectList, result);
 }
 
 function RouterGuard(params: GuardRule) {

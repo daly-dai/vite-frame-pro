@@ -12,7 +12,7 @@ const alias = {
   '@assets': resolve(__dirname, 'src/assets'),
   '@config': resolve(__dirname, 'src/config'),
   '@service': resolve(__dirname, 'src/service'),
-  '@packages': resolve(__dirname, 'src/packages'),
+  '@layout': resolve(__dirname, 'src/layout'),
   '@plugins': resolve(__dirname, 'src/plugins')
 };
 

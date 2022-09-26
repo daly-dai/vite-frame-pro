@@ -2,6 +2,7 @@ import { DependencyList, EffectCallback, useEffect, useRef } from 'react';
 
 //是否时第一次
 const isFirstRender = (): boolean => {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const isFirst: React.MutableRefObject<boolean> = useRef(true); //不会因为重复 render 重复申明， 类似于类组件的 this.xxx
   const { current } = isFirst;
   //如果是第一次，改变状态并返回true

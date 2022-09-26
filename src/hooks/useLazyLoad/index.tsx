@@ -3,7 +3,10 @@ import React, { ComponentType, lazy, Suspense } from 'react';
 /**
  * 为动态 import 包裹 lazy 和 Suspense
  */
-function lazyLoad(importer: () => Promise<{ default: ComponentType }>) {
+function LazyLoad(
+  importer: () => Promise<{ default: ComponentType }>,
+  RouterLoading: any
+) {
   if (!importer) {
     return undefined;
   }
@@ -11,10 +14,10 @@ function lazyLoad(importer: () => Promise<{ default: ComponentType }>) {
   const Component = lazy(importer);
   // 结合 Suspense，这里可以自定义 loading 组件
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<RouterLoading></RouterLoading>}>
       <Component />
     </Suspense>
   );
 }
 
-export default lazyLoad;
+export default LazyLoad;

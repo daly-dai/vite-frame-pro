@@ -21,8 +21,8 @@
       "@/*": [
         "src/*"
       ],
-      "@packages/*": [
-        "src/packages/*"
+      "@layout/*": [
+        "src/layout/*"
       ],
       "@pages/*": [
         "src/pages/*"

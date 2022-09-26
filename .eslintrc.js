@@ -15,7 +15,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     // 1. 接入 prettier 的规则
     'prettier',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
+    'plugin:react-hooks/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
