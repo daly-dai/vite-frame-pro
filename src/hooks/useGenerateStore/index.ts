@@ -65,6 +65,7 @@ function generateStore<T extends object>({
 
   return () => {
     const resultStore = useSnapshot(result);
+    console.log(111212121);
 
     return assign({}, resultStore, _actions);
   };

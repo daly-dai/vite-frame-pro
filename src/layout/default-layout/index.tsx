@@ -6,8 +6,6 @@ export type Props = {
 };
 
 const DefaultLayout: FC<Props> = () => {
-  // return <Navigate to="/login" replace={true} />;
-
   return (
     <div>
       <Outlet />

@@ -9,19 +9,19 @@ let onRouterBefore: any;
 let RouterLoading: FunctionRule;
 
 //路由导航，设置redirect重定向 和 auth权限
-function Guard({ element, meta }: { element: any; meta: any }) {
-  const { pathname } = useLocation();
-  const nextPath = onRouterBefore ? onRouterBefore(meta, pathname) : pathname;
+// function Guard({ element, route }: { element: any; route: RouteObject }) {
+//   const { pathname } = useLocation();
+//   const nextPath = onRouterBefore ? onRouterBefore(route, pathname) : pathname;
 
-  if (nextPath && nextPath !== pathname) {
-    element = <Navigate to={nextPath} replace={true} />;
-  }
+//   if (nextPath && nextPath !== pathname) {
+//     element = <Navigate to={nextPath} replace={true} />;
+//   }
 
-  return element;
-}
+//   return element;
+// }
 
 // 路由懒加载
-function lazyLoadRouters(element: any, meta = {}) {
+function lazyLoadRouters(element: any) {
   const LazyElement = lazy(element);
 
   const GetElement = () => {
@@ -32,12 +32,16 @@ function lazyLoadRouters(element: any, meta = {}) {
     );
   };
 
-  return Guard({ element: GetElement(), meta });
+  return GetElement();
 }
 
 // 设置重定向的数据
 function setRedirectData(route: RouteObject) {
   const stashRoute = cloneDeep(route);
+
+  ['redirect', 'parentId', 'meta', 'children'].forEach(
+    (name) => delete stashRoute[name]
+  );
 
   if (stashRoute?.children) delete stashRoute?.children;
 
@@ -54,7 +58,7 @@ function transRoutes(routes: RouteObject[]) {
 
   const result = operationAttrToNodes(stashRoutes, (route: RouteObject) => {
     if (route.element) {
-      route.element = lazyLoadRouters(route.element, route.meta);
+      route.element = lazyLoadRouters(route.element);
     }
 
     if (route.redirect) {

@@ -2,17 +2,32 @@ import React from 'react';
 import styles from './Login.module.less';
 import { Form, Input, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import pageRoutes from '@/hooks/useGenerateRoutes';
+import appStore from '@/store/appStore';
+import { useNavigate } from 'react-router-dom';
+import { pageRoutesInstance } from '@/router';
 
 const Login = () => {
+  const navigate = useNavigate();
+  const appStoreInstance = appStore();
   const [form] = Form.useForm();
 
   const handleFormFinish = () => {
     console.log('handleFormFinish');
   };
 
+  const onDynamicRouters = () => {
+    pageRoutesInstance.push(...pageRoutes);
+    appStoreInstance.setRouters(pageRoutes);
+
+    navigate('/home');
+    return false;
+  };
+
   return (
     <div className={styles.login}>
       <div className={styles.title}>vite-frame-pro</div>
+      <Button onClick={onDynamicRouters}>动态生成路由并跳转</Button>
       <div className={styles.formBox}>
         <div className={styles.formBoxTitle}>登录</div>
         {/* 手机号登陆 */}
