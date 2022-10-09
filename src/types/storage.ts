@@ -4,7 +4,7 @@ export type _Method = (...args: any[]) => any;
 
 export type _ActionsTree = Record<string, _Method>;
 
-export type PersistStore = Persist | Persist[] | null;
+export type PersistStore = Persist | Persist[] | null | boolean;
 
 export interface Persist {
   key: string;

@@ -1,22 +1,37 @@
 import generateStore from '@/hooks/useGenerateStore';
 
-const userStore = generateStore({
+export interface UserStore {
+  token: string;
+  userInfo: {
+    userName: string;
+    useId: string;
+  };
+}
+
+const userStore = generateStore<UserStore>({
+  key: 'userStore',
   state: {
     token: '',
     userInfo: {
       userName: '',
-      permission: ''
-    },
-    routers: []
+      useId: ''
+    }
   },
   actions: {
-    setToken: (data, state) => {
-      state.token = data;
+    // 登录
+    login: async (params, state) => {
+      setTimeout(() => {
+        state.token = 'params';
+      }, 1000);
     },
-    setRouters: (data, state) => {
-      state.routers = data;
+    // 退出
+    loginOut: async (params, state) => {
+      setTimeout(() => {
+        state.token = '';
+      }, 1000);
     }
-  }
+  },
+  persist: true
 });
 
 export default userStore;

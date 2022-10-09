@@ -5,6 +5,7 @@ interface AppStore {
   routers: RouteObject[];
 }
 const appStore = generateStore<AppStore>({
+  key: 'appStore',
   state: {
     routers: []
   },
@@ -13,11 +14,7 @@ const appStore = generateStore<AppStore>({
       state.routers = data;
     }
   },
-  persist: {
-    key: 'appStorage',
-    storage: localStorage,
-    paths: ['routers']
-  }
+  persist: true
 });
 
 export default appStore;

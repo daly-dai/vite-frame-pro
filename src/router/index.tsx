@@ -1,16 +1,23 @@
 import { defaultRoutes } from '@hooks/useGenerateRoutes';
-import appStore from '@/store/appStore';
 import { useRoutes } from 'react-router-dom';
+import { useSnapshot } from 'valtio';
+import userStore, { UserStore } from '@/store/userStore';
+import privateRoutes from '@/hooks/useGenerateRoutes';
+import { useEffect, useState } from 'react';
 import { RouteObject } from '@/types/router';
-export const pageRoutesInstance: RouteObject[] = [];
 
 const RouterTree = () => {
-  // const appStoreInstance = appStore();
-  // console.log(defaultRoutes, appStoreInstance, '动态路由');
+  const { state } = userStore;
+  const [permissionRoutes, setPermissionRoutes] = useState<RouteObject[]>([]);
+  const userState = useSnapshot<UserStore>(state);
 
-  // const appStorgRoutes = appStoreInstance.routers;
-  const appRoutes = [...defaultRoutes, ...pageRoutesInstance];
-  console.log(appRoutes, 88888);
+  useEffect(() => {
+    if (userState.token) {
+      setPermissionRoutes(privateRoutes);
+    }
+  }, [userState.token]);
+
+  const appRoutes = [...defaultRoutes, ...permissionRoutes];
 
   return useRoutes(appRoutes);
 };

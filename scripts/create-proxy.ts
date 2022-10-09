@@ -18,10 +18,10 @@ const createProxySelfFile = function () {
     const text = `/* @desc devServer 代理配置 */
 export default  {
     '/api': {
-      target: 'http://10.1.1.123:8110',
+      target: 'http://10.10.200.24:5000',
       secure: false,
       changeOrigin: true,
-      pathRewrite: { '^/api': '' } // 路径重写，阿里云地址需要注释掉
+      pathRewrite: { '^/api': '' }
     }
   };
 `;

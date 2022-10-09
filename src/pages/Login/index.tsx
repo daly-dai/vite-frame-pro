@@ -2,14 +2,12 @@ import React from 'react';
 import styles from './Login.module.less';
 import { Form, Input, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import pageRoutes from '@/hooks/useGenerateRoutes';
-import appStore from '@/store/appStore';
 import { useNavigate } from 'react-router-dom';
-import { pageRoutesInstance } from '@/router';
+import userStore from '@/store/userStore';
 
 const Login = () => {
   const navigate = useNavigate();
-  const appStoreInstance = appStore();
+  const { actions: userActions } = userStore;
   const [form] = Form.useForm();
 
   const handleFormFinish = () => {
@@ -17,8 +15,8 @@ const Login = () => {
   };
 
   const onDynamicRouters = () => {
-    pageRoutesInstance.push(...pageRoutes);
-    appStoreInstance.setRouters(pageRoutes);
+    // actions.setRouters(pageRoutes);
+    userActions.login('saijdhijsdfh');
 
     navigate('/home');
     return false;
