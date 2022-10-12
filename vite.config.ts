@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import path from 'path';
 import autoprefixer from 'autoprefixer'; // 自动添加css兼容前缀
 import cssnano from 'cssnano'; // 压缩css体积
-import windi from 'vite-plugin-windicss';
+import windicss from 'vite-plugin-windicss';
 
 import viteEslint from 'vite-plugin-eslint';
 
@@ -16,7 +16,7 @@ import { alias } from './frame.config';
 import proxy from './config/proxy-self';
 // 定义css的全局变量
 const variablePath = normalizePath(
-  path.resolve('./src/assets/css/variable.scss')
+  path.resolve('./src/assets/styles/variable.scss')
 );
 
 // https://vitejs.dev/config/
@@ -33,31 +33,9 @@ export default defineConfig({
         ]
       }
     }),
-    windi(),
+    windicss(),
     viteEslint(),
     svgr(),
-    // viteImagemin({
-    //   // 无损压缩配置，无损压缩下图片质量不会变差
-    //   optipng: {
-    //     optimizationLevel: 7
-    //   },
-    //   // 有损压缩配置，有损压缩下图片质量可能会变差
-    //   pngquant: {
-    //     quality: [0.8, 0.9]
-    //   },
-    //   // svg 优化
-    //   svgo: {
-    //     plugins: [
-    //       {
-    //         name: 'removeViewBox'
-    //       },
-    //       {
-    //         name: 'removeEmptyAttrs',
-    //         active: false
-    //       }
-    //     ]
-    //   }
-    // }),
     createSvgIconsPlugin({
       iconDirs: [path.join(__dirname, 'src/assets/icons')]
     })
