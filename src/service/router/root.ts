@@ -15,24 +15,16 @@ const routerConfig = [
         },
         name: 'index',
         element: () => import('@/pages/Main/index')
+      },
+      {
+        path: 'dashboard',
+        name: 'dashboard',
+        meta: {
+          title: '驾驶舱'
+        },
+        element: () => import('@pages/Dashboard/index')
       }
     ]
-  },
-  // {
-  //   path: 'login',
-  //   name: 'login',
-  //   meta: {
-  //     title: '登录页面'
-  //   },
-  //   element: () => import('@pages/Login/index')
-  // },
-  {
-    path: 'dashboard',
-    name: 'dashboard',
-    meta: {
-      title: '子路由页面'
-    },
-    element: () => import('@pages/Dashboard/index')
   }
 ];
 

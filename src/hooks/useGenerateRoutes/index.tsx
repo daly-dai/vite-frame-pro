@@ -33,7 +33,6 @@ function generatePathConfig(loading?: any): RouteObject[] {
     }
     // 静态白名单页面不作处理
     if (modulesPath.indexOf('static') > -1) {
-      console.log(modules[modulesPath].default, modulesPath, 9090999999);
       staticRoutes = modules[modulesPath].default;
       return;
     }
@@ -60,7 +59,6 @@ const pageRoutes = disposeRouter(generatePathConfig());
 
 // 默认初始路由
 const defaultRoutes = disposeRouter(staticRoutes);
-console.log(staticRoutes, 8888888);
 
 export { defaultRoutes };
 export default pageRoutes;

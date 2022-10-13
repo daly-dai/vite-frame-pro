@@ -11,21 +11,14 @@ const Login = () => {
   const [form] = Form.useForm();
 
   const handleFormFinish = () => {
-    console.log('handleFormFinish');
-  };
-
-  const onDynamicRouters = () => {
-    // actions.setRouters(pageRoutes);
-    userActions.login('saijdhijsdfh');
+    userActions.login('setToken');
 
     navigate('/home');
-    return false;
   };
 
   return (
     <div className={styles.login}>
       <div className={styles.title}>vite-frame-pro</div>
-      <Button onClick={onDynamicRouters}>动态生成路由并跳转</Button>
       <div className={styles.formBox}>
         <div className={styles.formBoxTitle}>登录</div>
         {/* 手机号登陆 */}
