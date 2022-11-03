@@ -23,6 +23,14 @@ const routerConfig = [
           title: '驾驶舱'
         },
         element: () => import('@pages/Dashboard/index')
+      },
+      {
+        path: 'systemSetup',
+        name: 'systemSetup',
+        meta: {
+          title: '系统设置'
+        },
+        element: () => import('@pages/system-setup/index')
       }
     ]
   }
