@@ -5,5 +5,5 @@
     "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["vite.config.ts", "frame.config.ts"]
+  "include": ["vite.config.ts", "frame.config.ts", "config/proxy-self.ts"]
 }

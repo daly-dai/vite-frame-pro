@@ -2,6 +2,7 @@ import React from 'react';
 
 //meta规则
 export interface MetaRule {
+  title: string,
   [name: string]: string | boolean; //其他参数
 }
 

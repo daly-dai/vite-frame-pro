@@ -1,12 +1,25 @@
-import staticRoutes from '@hooks/useGenerateRoutes';
-import RouterGuard from '@hooks/useRouterGuard';
-import onRouteBefore from './guard';
+import { defaultRoutes } from '@hooks/useGenerateRoutes';
+import { useRoutes } from 'react-router-dom';
+import { useSnapshot } from 'valtio';
+import userStore, { UserStore } from '@/store/userStore';
+import privateRoutes from '@/hooks/useGenerateRoutes';
+import { useEffect, useState } from 'react';
+import { RouteObject } from '@/types/router';
 
 const RouterTree = () => {
-  return RouterGuard({
-    onRouterBefore: onRouteBefore as any,
-    routers: staticRoutes
-  });
+  const { state } = userStore;
+  const [permissionRoutes, setPermissionRoutes] = useState<RouteObject[]>([]);
+  const userState = useSnapshot<UserStore>(state);
+
+  useEffect(() => {
+    if (userState.token) {
+      setPermissionRoutes(privateRoutes);
+    }
+  }, [userState.token]);
+
+  const appRoutes = [...defaultRoutes, ...permissionRoutes];
+
+  return useRoutes(appRoutes);
 };
 
 export default RouterTree;

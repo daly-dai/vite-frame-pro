@@ -1,24 +1,7 @@
-import React, { useEffect } from 'react';
-import placeStore from '@/store/placeStore';
-import { getTest } from './api';
+import React from 'react';
 
 const Main = () => {
-  const store = placeStore();
-
-  useEffect(() => {
-    setTimeout(() => {
-      store.changeUiStyle('test');
-
-      getTest({});
-    }, 5000);
-  }, []);
-
-  return (
-    <>
-      首页
-      {store.uiStyle}
-    </>
-  );
+  return <>首页</>;
 };
 
 export default Main;

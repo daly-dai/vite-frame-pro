@@ -10,8 +10,15 @@ export interface ResultData<T = any> extends Result {
   data?: T;
 }
 
-import { RequestFn, RequestFunc } from '@/types/http';
 import { AxiosRequestConfig } from 'axios';
+
+type RequestFUN = (
+  url: string,
+  params: any,
+  config: any,
+  action: any,
+  format: any
+) => any;
 
 /**
  * @param {Object} config
@@ -21,14 +28,14 @@ import { AxiosRequestConfig } from 'axios';
  * @param {'json'|'query'|'urlencoded'} config.format
  * @return {Promise}
  */
-const request: RequestFunc = async ({
+const request: any = async ({
   url,
   params,
   method = 'post',
   format = 'json',
   action,
   config = {}
-}) => {
+}: any) => {
   if (action) {
     action();
   }
@@ -68,16 +75,16 @@ const request: RequestFunc = async ({
   } as AxiosRequestConfig);
 };
 
-const get: RequestFn = (url, params, config, action) =>
+const get: RequestFUN = (url, params, config, action) =>
   request({ url, params, method: 'get', action, config });
 
-const post: RequestFn = (url, params, config, format, action) =>
+const post: RequestFUN = (url, params, config, format, action) =>
   request({ url, params, format, action, config });
 
-const put: RequestFn = (url, params, config) =>
+const put: RequestFUN = (url, params, config) =>
   request({ url, params, method: 'put', config });
 
-const deleteFun: RequestFn = (url, params, config, format) =>
+const deleteFun: RequestFUN = (url, params, config, format) =>
   request({ url, params, method: 'delete', format, config });
 
 export { get, post, put, deleteFun };

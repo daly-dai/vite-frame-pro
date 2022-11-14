@@ -21,6 +21,7 @@ const AuthCode = (params: { onChange: (arg0: string) => void }) => {
   };
 
   useEffect(() => {
+    console.log(imgPath, 8888);
     const random = Math.random().toFixed(15);
     params.onChange(random);
     setImgPath(`${baseAuthCodePath}?${random}`);

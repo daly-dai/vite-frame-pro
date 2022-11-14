@@ -5,5 +5,11 @@ export default defineConfig({
   attributify: true,
   shortcuts: {
     'flex-c': 'flex justify-center items-center'
+  },
+  spacing: {
+    sm: '8px',
+    md: '16px',
+    lg: '24px',
+    xl: '48px'
   }
 });

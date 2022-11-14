@@ -37,9 +37,10 @@
 
   .formBox {
     width: 350px;
-    height: 350px;
+    height: 280px;
     padding: 28px 28px 0;
-    background-color: #fff;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
     transform-origin: 100% 100%;
     border-radius: 8px;
     overflow: hidden;
@@ -47,6 +48,12 @@
     top: 50%;
     transform: translateY(-50%);
     right: 20%;
+
+    .formBoxTitle {
+      margin: 0 auto 10px;
+      text-align: center;
+      font-size: 18px;
+    }
   }
 }
 

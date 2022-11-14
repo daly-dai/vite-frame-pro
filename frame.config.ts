@@ -7,12 +7,12 @@ const alias = {
   '@hooks': resolve(__dirname, 'src/hooks'),
   '@pages': resolve(__dirname, 'src/pages'),
   '@types': resolve(__dirname, 'src/types'),
-  '@components': resolve(__dirname, 'src/packages/components'),
+  '@components': resolve(__dirname, 'src/components'),
   '@utils': resolve(__dirname, 'src/utils'),
   '@assets': resolve(__dirname, 'src/assets'),
   '@config': resolve(__dirname, 'src/config'),
   '@service': resolve(__dirname, 'src/service'),
-  '@packages': resolve(__dirname, 'src/packages'),
+  '@layout': resolve(__dirname, 'src/layout'),
   '@plugins': resolve(__dirname, 'src/plugins')
 };
 

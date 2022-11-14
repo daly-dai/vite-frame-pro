@@ -1,29 +1,39 @@
-import { RouteObject } from '@/types/router';
+import { FunctionRule, RouteObject } from '@/types/router';
 import { arrayToTree } from '@utils/tree';
 import { concat } from 'lodash-es';
+import disposeRouter from '../useDisposeRouter';
 
 const staticPath = '/src/service/router/';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let RouterLoading: FunctionRule;
+let staticRoutes: RouteObject[] = [];
 
 function rootRouteData(modules: any): RouteObject[] {
   const root = (modules[`${staticPath}root.ts`] as any).default;
 
   root.forEach((item: RouteObject) => {
     item['parentId'] = '';
-    // item.element = lazyLoad(item.element)
   });
 
   return root;
 }
 
 // 生成路由配置信息
-function generatePathConfig(): RouteObject[] {
-  const modules = import.meta.glob('/src/service/router/**/*.ts', {
+function generatePathConfig(loading?: any): RouteObject[] {
+  RouterLoading = () => loading || <></>;
+
+  const modules: any = import.meta.glob('/src/service/router/**/*.ts', {
     eager: true
   });
   let modulesList: RouteObject[] = rootRouteData(modules);
 
   Object.keys(modules).forEach((modulesPath) => {
     if (modulesPath.indexOf('root') > -1) {
+      return;
+    }
+    // 静态白名单页面不作处理
+    if (modulesPath.indexOf('static') > -1) {
+      staticRoutes = modules[modulesPath].default;
       return;
     }
 
@@ -34,7 +44,7 @@ function generatePathConfig(): RouteObject[] {
 
     routerData.forEach((item: RouteObject) => {
       item['parentId'] = parentId;
-      // item.element = lazyLoad(item.element)
+      // item.element = lazyLoadRouters(item.element);
     });
 
     modulesList = concat(modulesList, routerData);
@@ -44,5 +54,11 @@ function generatePathConfig(): RouteObject[] {
 
   return result;
 }
+// 需要权限的路由
+const pageRoutes = disposeRouter(generatePathConfig());
 
-export default generatePathConfig();
+// 默认初始路由
+const defaultRoutes = disposeRouter(staticRoutes);
+
+export { defaultRoutes };
+export default pageRoutes;

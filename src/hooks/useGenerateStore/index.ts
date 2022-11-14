@@ -1,12 +1,13 @@
 import { PersistStore } from '@/types/storage';
-import { assign, isObject } from 'lodash-es';
-import { proxy, useSnapshot, subscribe } from 'valtio';
+import { isObject } from 'lodash-es';
+import { proxy } from 'valtio';
 
 import { storePersist } from './store-persist';
 export type _Method = (...args: any[]) => any;
 
 type Actions = { [key: string]: _Method };
 interface storeParams<T> {
+  key: string;
   state: T;
   actions?: Actions;
   persist?: PersistStore;
@@ -24,19 +25,8 @@ function generateActions<T>(state: T, actions: Actions) {
   return result;
 }
 
-function generatePersist<T extends object>(
-  state: T,
-  persist: PersistStore
-): void {
-  storePersist(state, persist);
-  // 订阅状态变化
-  // todo 局部更新存储数据
-  subscribe(state, () => {
-    storePersist(state, persist);
-  });
-}
-
 function generateStore<T extends object>({
+  key,
   state,
   actions,
   persist = null
@@ -60,14 +50,11 @@ function generateStore<T extends object>({
 
   // 处理缓存
   if (persist) {
-    generatePersist<T>(result, persist);
+    storePersist(result, persist, key);
+    // generatePersist<T>(result, persist);
   }
 
-  return () => {
-    const resultStore = useSnapshot(result);
-
-    return assign({}, resultStore, _actions);
-  };
+  return { state: result, actions: _actions };
 }
 
 export default generateStore;
