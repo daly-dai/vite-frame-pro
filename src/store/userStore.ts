@@ -31,7 +31,10 @@ const userStore = generateStore<UserStore>({
       }, 1000);
     }
   },
-  persist: true
+  persist: {
+    storage: sessionStorage,
+    isAll: true
+  }
 });
 
 export default userStore;

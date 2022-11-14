@@ -7,10 +7,10 @@ export type _ActionsTree = Record<string, _Method>;
 export type PersistStore = Persist | Persist[] | null | boolean;
 
 export interface Persist {
-  key: string;
+  key?: string;
   storage?: Storage;
   paths?: string[];
-  isAll?: false;
+  isAll?: boolean;
   isDefault?: boolean;
 }
 

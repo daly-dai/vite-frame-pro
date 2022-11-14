@@ -48,6 +48,14 @@ const items: MenuItem[] = [
   ])
 ];
 
+const authTree = [
+  {
+    icon: '',
+    path: '',
+    pathName: '',
+    children: []
+  }
+];
 // submenu keys of first level
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
 
