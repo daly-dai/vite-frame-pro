@@ -16,34 +16,34 @@ const Login = () => {
     navigate('/home');
   };
 
-  const getMenuData = () => {
-    const menuData: any = [
-      {
-        id: 0,
-        menuCode: '100',
-        menuName: '驾驶舱',
-        path: '/dashboard',
-        icon: '',
-        children: []
-      },
-      {
-        id: 1,
-        menuCode: '200',
-        menuName: '系统设置',
-        path: '/',
-        icon: '',
-        children: [
-          {
-            id: 2,
-            menuCode: '200',
-            menuName: '系统设置',
-            path: '',
-            icon: ''
-          }
-        ]
-      }
-    ];
-  };
+  // const getMenuData = () => {
+  //   const menuData: any = [
+  //     {
+  //       id: 0,
+  //       menuCode: '100',
+  //       menuName: '驾驶舱',
+  //       path: '/dashboard',
+  //       icon: '',
+  //       children: []
+  //     },
+  //     {
+  //       id: 1,
+  //       menuCode: '200',
+  //       menuName: '系统设置',
+  //       path: '/',
+  //       icon: '',
+  //       children: [
+  //         {
+  //           id: 2,
+  //           menuCode: '200',
+  //           menuName: '系统设置',
+  //           path: '',
+  //           icon: ''
+  //         }
+  //       ]
+  //     }
+  //   ];
+  // };
 
   return (
     <div className={styles.login}>

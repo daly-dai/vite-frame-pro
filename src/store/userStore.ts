@@ -32,7 +32,7 @@ const userStore = generateStore<UserStore>({
     }
   },
   persist: {
-    storage: sessionStorage,
+    storage: localStorage,
     isAll: true
   }
 });
