@@ -1,4 +1,4 @@
-import generateStore from '@/hooks/useGenerateStore';
+import generateStore from '@/plugins/useGenerateStore';
 
 export interface UserStore {
   token: string;

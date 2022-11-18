@@ -1,8 +1,8 @@
-import { defaultRoutes } from '@hooks/useGenerateRoutes';
+import { defaultRoutes } from '@/plugins/useGenerateRoutes';
 import { useRoutes } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import userStore, { UserStore } from '@/store/userStore';
-import privateRoutes from '@/hooks/useGenerateRoutes';
+import privateRoutes from '@/plugins/useGenerateRoutes';
 import { useEffect, useState } from 'react';
 import { RouteObject } from '@/types/router';
 

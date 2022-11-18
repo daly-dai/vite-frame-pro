@@ -1,4 +1,4 @@
-import { isArray, get, isBoolean, forIn } from 'lodash-es';
+import { isArray, get, isBoolean, forIn, toString } from 'lodash-es';
 import { Persist, PersistStore, StrObj } from '@/types/storage';
 import { subscribe } from 'valtio';
 
@@ -54,8 +54,18 @@ function updateStateArrToStorage(
  * @param value
  */
 function updateStoreData(key: string, value: any, storage: Storage) {
-  console.log(value, 'storage.setItem');
-  storage.setItem && storage.setItem(key, JSON.stringify(value));
+  let storageData = '';
+
+  try {
+    storageData =
+      toString(value) === '[object Object]'
+        ? JSON.stringify(value)
+        : toString(value);
+  } catch (error) {
+    storageData = JSON.stringify(value);
+  }
+
+  storage.setItem && storage.setItem(key, storageData);
 }
 
 /**
@@ -75,19 +85,16 @@ function storePersist<T extends object>(
   // 整体进行存储时
   if (isBoolean(persist) && persist && key) {
     const storageData = localStorage.getItem(key) || '{}';
-    console.log(storageData, key, 'storageData');
 
     const storageResult = JSON.parse(storageData);
 
     if (storageResult) {
       patchState(state, storageResult);
-      console.log(1121212);
-      localStorage.setItem(key, JSON.stringify(state));
+
+      updateStoreData(key, state, localStorage);
     }
-    console.log(state, 'state1212121212');
     // 初始化store的存储
     subscribe(state, () => {
-      console.log(242424242);
       updateStoreData(key, state, localStorage);
     });
 
@@ -125,7 +132,6 @@ function storePersist<T extends object>(
   });
 
   subscribe(state, () => {
-    console.log(state, 'state');
     updateStateArrToStorage(state, persistArr, key);
   });
 }

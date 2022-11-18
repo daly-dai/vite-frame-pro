@@ -1,7 +1,7 @@
 import { FunctionRule, RouteObject } from '@/types/router';
 import { arrayToTree } from '@utils/tree';
 import { concat } from 'lodash-es';
-import disposeRouter from '../useDisposeRouter';
+import disposeRouter from '../../hooks/useDisposeRouter';
 
 const staticPath = '/src/service/router/';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

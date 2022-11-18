@@ -1,5 +1,5 @@
 import { RouteObject } from './../types/router.d';
-import generateStore from '@/hooks/useGenerateStore';
+import generateStore from '@/plugins/useGenerateStore';
 
 interface AppStore {
   routers: RouteObject[];

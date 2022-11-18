@@ -1,12 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import * as echarts from 'echarts';
 import 'echarts-gl';
-import Axios from 'axios';
 
 import { hzData } from './hz';
 import './index.less';
 import mockHzData from '@/assets/mapData/hzData.json';
-// import { mockData } from './mockData.js';
+
 const option = {
   backgroundColor: '#000',
   title: {
