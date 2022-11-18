@@ -42,7 +42,7 @@ function updateStateArrToStorage(
         return finalObj;
       }, {});
 
-      updateStoreData(persistKey, JSON.stringify(_stateStash), storage);
+      updateStoreData(persistKey, _stateStash, storage);
     }
   });
 }
@@ -54,7 +54,8 @@ function updateStateArrToStorage(
  * @param value
  */
 function updateStoreData(key: string, value: any, storage: Storage) {
-  storage.setItem(key, JSON.stringify(value));
+  console.log(value, 'storage.setItem');
+  storage.setItem && storage.setItem(key, JSON.stringify(value));
 }
 
 /**
@@ -107,7 +108,7 @@ function storePersist<T extends object>(
     // 没有paths或者isAll === true 缓存所有的state
     if (persistItem?.isAll || !paths) {
       patchState(state, storageResult);
-      updateStoreData(persistKey, JSON.stringify(state), storage);
+      updateStoreData(persistKey, state, storage);
       return;
     }
 
@@ -119,11 +120,12 @@ function storePersist<T extends object>(
         return finalObj;
       }, {});
 
-      updateStoreData(persistKey, JSON.stringify(_stateStash), storage);
+      updateStoreData(persistKey, _stateStash, storage);
     }
   });
 
   subscribe(state, () => {
+    console.log(state, 'state');
     updateStateArrToStorage(state, persistArr, key);
   });
 }

@@ -5,6 +5,7 @@ import Axios from 'axios';
 
 import { hzData } from './hz';
 import './index.less';
+import mockHzData from '@/assets/mapData/hzData.json';
 // import { mockData } from './mockData.js';
 const option = {
   backgroundColor: '#000',
@@ -25,13 +26,8 @@ const option = {
     },
     silent: true,
     itemStyle: {
-      normal: {
-        areaColor: '#323c48',
-        borderColor: '#111'
-      },
-      emphasis: {
-        areaColor: '#2a333d'
-      }
+      areaColor: '#323c48',
+      borderColor: '#111'
     }
   },
   series: [
@@ -40,12 +36,12 @@ const option = {
       type: 'scatterGL',
       progressive: 1e6,
       coordinateSystem: 'geo',
-      symbolSize: 1,
-      zoomScale: 0.002,
+      symbolSize: 2,
+      zoomScale: 0.022,
       blendMode: 'lighter',
       large: true,
       itemStyle: {
-        color: 'rgb(20, 15, 2)'
+        color: 'rgb(152, 152, 15)'
       },
       postEffect: {
         enable: true
@@ -65,7 +61,7 @@ const Main = () => {
 
     echarts.registerMap('hangzhou', hzData);
 
-    const chartInstance = echarts.init(dom, null, {
+    const chartInstance = (echarts as any).init(dom, null, {
       renderer: 'canvas',
       useDirtyRect: false
     });
@@ -83,27 +79,24 @@ const Main = () => {
     if (!myChart) return;
 
     const getChartData = () => {
-      Axios.get('../../assets/mapData/hzData.json').then((res) => {
-        const { mockData } = res as any;
+      const { mockData } = mockHzData as any;
 
-        console.log(res, 88888);
-        const chartData = [];
+      const chartData = [];
 
-        for (let i = 0; i < 20000; i++) {
-          if (!mockData[i]) return;
+      for (let i = 0; i < 20000; i++) {
+        if (!mockData[i]) return;
 
-          const dataItem = [mockData[i].lon, mockData[i].lat];
+        const dataItem = [mockData[i].lon, mockData[i].lat];
 
-          chartData.push(dataItem);
-        }
-        myChart.appendData({
-          seriesIndex: 0,
-          data: chartData
-        });
+        chartData.push(dataItem);
+      }
+      myChart.appendData({
+        seriesIndex: 0,
+        data: chartData
       });
     };
 
-    getChartData();
+    myChart.appendData && getChartData();
   }, [myChart]);
   return <div className="chart" id="container"></div>;
 };
