@@ -24,6 +24,14 @@ function getItem(
     type
   } as MenuItem;
 }
+interface MenuItemTypes {
+  id: '';
+  name: '';
+  label: '';
+  iconName: '';
+  children: MenuItemTypes[];
+}
+// const menuStashList = useState();
 
 const items: MenuItem[] = [
   getItem('Navigation One', 'sub1', <MailOutlined />, [

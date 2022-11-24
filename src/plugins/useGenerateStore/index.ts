@@ -51,10 +51,9 @@ function generateStore<T extends object>({
   // 处理缓存
   if (persist) {
     storePersist(result, persist, key);
-    // generatePersist<T>(result, persist);
   }
 
-  return { state: result, actions: _actions };
+  return { state: result, ..._actions };
 }
 
 export default generateStore;
