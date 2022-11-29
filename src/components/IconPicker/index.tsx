@@ -68,6 +68,7 @@ const IconPicker = () => {
       <div className="pick">
         <div className="pick-input">
           <Input
+            disabled
             value={iconName}
             prefix={<SvgCom iconName={iconName} size="1.5"></SvgCom>}
           />
