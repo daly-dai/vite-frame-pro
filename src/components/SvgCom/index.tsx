@@ -1,4 +1,4 @@
-import { isNumber, isString } from 'lodash-es';
+import { isString } from 'lodash-es';
 import React, { FC, useCallback, useMemo } from 'react';
 import './index.less';
 

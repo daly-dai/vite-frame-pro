@@ -1,10 +1,13 @@
 import SvgCom from '@/components/SvgCom';
 import IconPicker from '@/components/IconPicker';
-import React from 'react';
+import React, { useState } from 'react';
 
 import './index.less';
+import { Input } from 'antd';
+import PasswordCheck from '@/components/PasswordCheck';
 
 const Main = () => {
+  const [psd, setPsd] = useState('');
   return (
     <div>
       首页
@@ -12,6 +15,8 @@ const Main = () => {
       <div style={{ margin: '120px' }}>
         <IconPicker></IconPicker>
       </div>
+      <Input value={psd} onChange={(e) => setPsd(e.target.value)}></Input>
+      <PasswordCheck isDynamic={true} password={psd}></PasswordCheck>
     </div>
   );
 };

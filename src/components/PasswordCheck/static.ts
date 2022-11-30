@@ -32,6 +32,17 @@ const COUNT_MAP: {
   }
 };
 
+// 包含关系的正则
+const CONTAINS_REG_CHECK_MAP: {
+  [key in string]: RegExp | RegExp[];
+} = {
+  lower: /^(?=.*?[a-z]).*$/,
+  upper: /^(?=.*?[A-Z]).*$/,
+  number: /^(?=.*?[0-9]).*$/,
+  symbol: /^(?=.*?[`~!@#$%^&*.<>￥，。《》?？【】、·~；’：”;']).*$/
+};
+
+// 类型正则
 const CHECK_REG_MAP: {
   [key in string]: RegExp | RegExp[];
 } = {
@@ -75,4 +86,4 @@ const CHECK_REG_MAP: {
   symbol: /^[^`~!@#$%^&*.<>￥，。《》?？【】、·~；’：”;']+$/
 };
 
-export { COUNT_MAP_LIST, COUNT_MAP, CHECK_REG_MAP };
+export { COUNT_MAP_LIST, COUNT_MAP, CHECK_REG_MAP, CONTAINS_REG_CHECK_MAP };

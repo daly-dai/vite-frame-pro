@@ -2,10 +2,16 @@ import { isArray } from 'lodash-es';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 
 import './index.less';
-import { CHECK_REG_MAP, COUNT_MAP, COUNT_MAP_LIST } from './static';
+import {
+  CHECK_REG_MAP,
+  COUNT_MAP,
+  COUNT_MAP_LIST,
+  CONTAINS_REG_CHECK_MAP
+} from './static';
 
 interface PasswordProps {
   password: string;
+  isDynamic?: boolean;
 }
 interface PsdCount {
   count: number;
@@ -14,7 +20,7 @@ interface PsdCount {
 }
 
 // 密码校验
-const PasswordCheck: FC<PasswordProps> = ({ password }) => {
+const PasswordCheck: FC<PasswordProps> = ({ password, isDynamic = false }) => {
   const [psdCountList, setPsdCountList] = useState<PsdCount[]>([]);
 
   const checkStr = (str: string, type: string) => {
@@ -42,9 +48,9 @@ const PasswordCheck: FC<PasswordProps> = ({ password }) => {
   };
 
   const includeCheck = (str: string, type: string) => {
-    if (!CHECK_REG_MAP[type]) return true;
+    if (!CONTAINS_REG_CHECK_MAP[type]) return true;
 
-    return (CHECK_REG_MAP[type] as RegExp).test(str);
+    return (CONTAINS_REG_CHECK_MAP[type] as RegExp).test(str);
   };
 
   const checkPasswordInfo = (v: string) => {
@@ -75,21 +81,13 @@ const PasswordCheck: FC<PasswordProps> = ({ password }) => {
     if (includeCheck(v, 'number')) {
       const len = countLen('number', v);
 
-      if (len >= 3) {
-        count += 20;
-      } else {
-        count += 10;
-      }
+      count += len > 3 ? 20 : 10;
     }
 
-    if (includeCheck(v, 'syboml')) {
-      const sybomlLen = countLen('syboml', v);
+    if (includeCheck(v, 'symbol')) {
+      const symbolLen = countLen('symbol', v);
 
-      if (sybomlLen > 1) {
-        count += 25;
-      } else {
-        count += 10;
-      }
+      count += symbolLen > 1 ? 25 : 10;
     }
 
     return count;
@@ -102,9 +100,9 @@ const PasswordCheck: FC<PasswordProps> = ({ password }) => {
 
   // 判断是否在当前分数段内
   const checkUpCount = (checkItem: PsdCount) => {
-    if (count > checkItem.count) return checkItem.color;
+    if (count >= checkItem.count) return checkItem.color;
 
-    return 'rgb(221, 221, 221)';
+    return '';
   };
 
   useEffect(() => {
@@ -124,19 +122,23 @@ const PasswordCheck: FC<PasswordProps> = ({ password }) => {
         {psdCountList.map((item: PsdCount) => {
           const hasColor = checkUpCount(item);
 
+          if (isDynamic && !hasColor) {
+            return '';
+          }
+
           return (
             <li key={item.count}>
               <div className="password-line">
                 <div
                   className="line-bg"
                   style={{
-                    background: hasColor
+                    background: hasColor ? hasColor : 'rgb(221, 221, 221)'
                   }}
                 ></div>
                 <div
                   className="title"
                   style={{
-                    background: hasColor
+                    color: hasColor ? hasColor : ''
                   }}
                 >
                   {item.title}
@@ -145,37 +147,6 @@ const PasswordCheck: FC<PasswordProps> = ({ password }) => {
             </li>
           );
         })}
-
-        {/* <li>
-          <div className="password-line">
-            <div className="line-bg"></div>
-            <div className="title">一般</div>
-          </div>
-        </li>
-        <li>
-          <div className="password-line">
-            <div className="line-bg"></div>
-            <div className="title">强</div>
-          </div>
-        </li>
-        <li>
-          <div className="password-line">
-            <div className="line-bg"></div>
-            <div className="title">较强</div>
-          </div>
-        </li>
-        <li>
-          <div className="password-line">
-            <div className="line-bg"></div>
-            <div className="title">安全</div>
-          </div>
-        </li>
-        <li>
-          <div className="password-line">
-            <div className="line-bg"></div>
-            <div className="title">非常安全</div>
-          </div>
-        </li> */}
       </ul>
     </div>
   );
