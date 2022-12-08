@@ -1,13 +1,21 @@
 import SvgCom from '@/components/SvgCom';
 import IconPicker from '@/components/IconPicker';
-import React, { useState } from 'react';
+import React, { createRef, useRef, useState } from 'react';
 
 import './index.less';
-import { Input } from 'antd';
+import { Button, Input } from 'antd';
 import PasswordCheck from '@/components/PasswordCheck';
+import ShuModal from '@/components/ShuModal';
 
 const Main = () => {
   const [psd, setPsd] = useState('');
+  const modalRef = useRef() as any;
+
+  const showModal = () => {
+    console.log(modalRef, 'modalRef');
+    modalRef.current.showModal();
+  };
+
   return (
     <div>
       首页
@@ -17,6 +25,16 @@ const Main = () => {
       </div>
       <Input value={psd} onChange={(e) => setPsd(e.target.value)}></Input>
       <PasswordCheck isDynamic={true} password={psd}></PasswordCheck>
+      <ShuModal
+        ref={modalRef}
+        trigger={
+          <Button onClick={showModal} type="primary">
+            点击唤起弹框
+          </Button>
+        }
+      >
+        弹框内部内容
+      </ShuModal>
     </div>
   );
 };

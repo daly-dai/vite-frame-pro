@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Input, Popover } from 'antd';
+import { Popover, message } from 'antd';
 
 import iconJson from '@/assets/icon-font/iconfont.json';
 import SvgCom from '../SvgCom';
@@ -13,7 +13,7 @@ interface IconNameList {
 const IconPicker = () => {
   const [iconNameList, setIconNameList] = useState<IconNameList[]>([]);
   const [iconName, setIconName] = useState<string>('');
-  const [clicked, setClicked] = useState(false);
+  const [popoverVisible, setPopoverVisible] = useState(false);
 
   useEffect(() => {
     const { glyphs } = iconJson;
@@ -27,12 +27,25 @@ const IconPicker = () => {
     }
   }, []);
 
+  const showPopover = () => {
+    setPopoverVisible(true);
+  };
+
   const hidePopover = () => {
-    setClicked(false);
+    setPopoverVisible(false);
+  };
+
+  const handleCopy = async () => {
+    if ('clipboard' in navigator) {
+      message.success('复制成功');
+      return await navigator.clipboard.writeText(iconName);
+    }
+
+    return document.execCommand('copy', true, iconName);
   };
 
   const handleClickChange = (open: boolean) => {
-    setClicked(open);
+    setPopoverVisible(open);
   };
 
   const clickContent = () => {
@@ -57,24 +70,25 @@ const IconPicker = () => {
   };
 
   return (
-    <Popover
-      content={clickContent}
-      trigger="click"
-      open={clicked}
-      onOpenChange={handleClickChange}
-      overlayClassName="selectIconContent"
-      placement="right"
-    >
+    <>
       <div className="pick">
-        <div className="pick-input">
-          <Input
-            disabled
-            value={iconName}
-            prefix={<SvgCom iconName={iconName} size="1.5"></SvgCom>}
-          />
+        <div className="pick-icon" onClick={showPopover}>
+          <SvgCom iconName={iconName} size="1.5"></SvgCom>
+        </div>
+        <div className="pick-input" onClick={handleCopy}>
+          {iconName}
         </div>
       </div>
-    </Popover>
+
+      <Popover
+        content={clickContent}
+        trigger="click"
+        open={popoverVisible}
+        onOpenChange={handleClickChange}
+        overlayClassName="selectIconContent"
+        placement="right"
+      />
+    </>
   );
 };
 
