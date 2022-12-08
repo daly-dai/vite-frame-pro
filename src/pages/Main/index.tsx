@@ -11,7 +11,7 @@ const Main = () => {
   return (
     <div>
       首页
-      {/* <SvgCom iconName="iconqiyeshensu" size="3"></SvgCom> */}
+      <SvgCom iconName="iconqiyeshensu" size="3"></SvgCom>
       <div style={{ margin: '120px' }}>
         <IconPicker></IconPicker>
       </div>

@@ -27,6 +27,7 @@ const useUpdateEffect = (
   useEffect(() => {
     //如果不是第一次执行函数
     if (!isFirst) return effect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 };
 
