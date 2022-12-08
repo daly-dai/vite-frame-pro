@@ -51,7 +51,7 @@ const SvgCom: FC<IconProps> = ({
 
   return (
     <svg
-      className={`icon ${customClass}`}
+      className={`icon iconContainer ${customClass}`}
       aria-hidden="true"
       style={{ ...svgSize }}
     >

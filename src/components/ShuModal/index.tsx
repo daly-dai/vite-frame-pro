@@ -41,7 +41,7 @@ interface Props {
  * Modal 组件
  * @link [antd modal](https://ant.design/components/modal-cn/)
  */
-const BaseModal = forwardRef((props: Props, ref: any) => {
+const ShuModal = forwardRef((props: Props, ref: any) => {
   const { centered, onOk, okText, cancelText, children, trigger, triggerText } =
     props;
 
@@ -85,4 +85,4 @@ const BaseModal = forwardRef((props: Props, ref: any) => {
   );
 });
 
-export default BaseModal;
+export default ShuModal;

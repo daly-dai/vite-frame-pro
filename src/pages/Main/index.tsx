@@ -6,6 +6,7 @@ import './index.less';
 import { Button, Input } from 'antd';
 import PasswordCheck from '@/components/PasswordCheck';
 import ShuModal from '@/components/ShuModal';
+import ShuQuarterSelect from '@/components/shuQuarterSelect';
 
 const Main = () => {
   const [psd, setPsd] = useState('');
@@ -35,6 +36,7 @@ const Main = () => {
       >
         弹框内部内容
       </ShuModal>
+      <ShuQuarterSelect></ShuQuarterSelect>
     </div>
   );
 };
