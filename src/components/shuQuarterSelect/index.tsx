@@ -36,7 +36,7 @@ interface Props {
 const ShuQuarterSelect: FC<Props> = ({ defaultValue, onChange }) => {
   const [quarterValue, setQuarterValue] = useState<string>();
   const [year, setYear] = useState(new Date().getFullYear());
-  const [popVisible, setPopVisible] = useState(true);
+  const [popVisible, setPopVisible] = useState(false);
 
   const togglePopoverVisible = (open: boolean) => {
     setPopVisible(open);
