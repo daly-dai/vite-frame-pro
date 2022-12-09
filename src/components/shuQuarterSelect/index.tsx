@@ -1,5 +1,5 @@
 import { Input, Popover, DatePickerProps } from 'antd';
-import React, { FC, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import {
   DoubleLeftOutlined,
   DoubleRightOutlined,
@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 
 import './index.less';
+import { getFullQuarter } from './static';
 
 const quarterList = [
   {
@@ -28,13 +29,12 @@ const quarterList = [
 ];
 
 interface Props {
-  defaultValue?: any;
+  defaultValue?: Date;
   onChange?: (time: string) => void;
 }
 
 const ShuQuarterSelect: FC<Props> = ({ defaultValue, onChange }) => {
-  const [chooseQuarter, setChooseQuarter] = useState<string>();
-  const [quarterValue, setQuarterValue] = useState();
+  const [quarterValue, setQuarterValue] = useState<string>();
   const [year, setYear] = useState(new Date().getFullYear());
   const [popVisible, setPopVisible] = useState(true);
 
@@ -52,9 +52,34 @@ const ShuQuarterSelect: FC<Props> = ({ defaultValue, onChange }) => {
   };
 
   const clearClick = () => {
-    setChooseQuarter('');
     setPopVisible(false);
-    onChange && onChange('');
+    onChangeEvent('');
+  };
+
+  const onChangeEvent = useCallback(
+    (value: string) => {
+      onChange && onChange(value);
+    },
+    [onChange]
+  );
+
+  const initDefaultValue = useCallback(() => {
+    const fullQuarter = getFullQuarter(defaultValue);
+
+    setQuarterValue(fullQuarter);
+    onChangeEvent(fullQuarter);
+  }, [defaultValue, onChangeEvent]);
+
+  useEffect(() => {
+    initDefaultValue();
+  }, [initDefaultValue]);
+
+  // 选择
+  const onSelectQuarter = (time: string) => {
+    if (time === quarterValue) return false;
+
+    setQuarterValue(time);
+    setPopVisible(false);
   };
 
   const QuarterContent = () => {
@@ -71,9 +96,13 @@ const ShuQuarterSelect: FC<Props> = ({ defaultValue, onChange }) => {
         </div>
         <div className="pop-center">
           {quarterList.map((item) => {
+            const fullTime = `${year}-${item.value}`;
+            const isActive = quarterValue === fullTime;
+
             return (
               <span
-                className={`pop-center-item ${'pop-center-disable'}`}
+                onClick={() => onSelectQuarter(fullTime)}
+                className={`pop-center-item ${isActive && 'pop-center-active'}`}
                 key={item.value}
               >
                 {item.label}
