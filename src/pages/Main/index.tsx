@@ -9,6 +9,7 @@ import PasswordCheck from '@/components/PasswordCheck';
 import ShuModal from '@/components/ShuModal';
 import ShuQuarterSelect from '@/components/shuQuarterSelect';
 import ShuBackToTop from '@/components/ShuBackToTop';
+import ShuColorPicker from '@/components/ShuColorPicker';
 
 const Main = () => {
   const [psd, setPsd] = useState('');
@@ -40,6 +41,7 @@ const Main = () => {
       </ShuModal>
       <ShuQuarterSelect></ShuQuarterSelect>
       <ShuBackToTop container="main"></ShuBackToTop>
+      <ShuColorPicker modelValue="#333"></ShuColorPicker>
     </div>
   );
 };

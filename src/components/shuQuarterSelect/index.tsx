@@ -1,4 +1,4 @@
-import { Input, Popover, DatePickerProps } from 'antd';
+import { Input, Popover } from 'antd';
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import {
   DoubleLeftOutlined,
