@@ -20,3 +20,4 @@ CNAME
 /public
 node_modules
 tsconfig.json
+src/assets

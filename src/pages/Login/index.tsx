@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './Login.module.less';
 import { Form, Input, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
@@ -7,14 +7,18 @@ import userStore from '@/store/userStore';
 
 const Login = () => {
   const navigate = useNavigate();
-  const { actions: userActions } = userStore;
+  const { login } = userStore;
   const [form] = Form.useForm();
 
   const handleFormFinish = () => {
-    userActions.login('setToken');
+    login('setToken');
 
     navigate('/home');
   };
+
+  useEffect(() => {
+    console.log(userStore, 909090909);
+  }, []);
 
   // const getMenuData = () => {
   //   const menuData: any = [

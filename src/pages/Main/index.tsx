@@ -1,103 +1,49 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import * as echarts from 'echarts';
-import 'echarts-gl';
+import SvgCom from '@/components/SvgCom';
+import IconPicker from '@/components/IconPicker';
+import React, { createRef, useRef, useState } from 'react';
 
-import { hzData } from './hz';
 import './index.less';
-import mockHzData from '@/assets/mapData/hzData.json';
-
-const option = {
-  backgroundColor: '#000',
-  title: {
-    text: '10000000 GPS Points',
-    left: 'center',
-    textStyle: {
-      color: '#fff'
-    }
-  },
-  geo: {
-    map: 'hangzhou',
-    roam: true,
-    label: {
-      emphasis: {
-        show: false
-      }
-    },
-    silent: true,
-    itemStyle: {
-      areaColor: '#323c48',
-      borderColor: '#111'
-    }
-  },
-  series: [
-    {
-      name: '弱',
-      type: 'scatterGL',
-      progressive: 1e6,
-      coordinateSystem: 'geo',
-      symbolSize: 2,
-      zoomScale: 0.022,
-      blendMode: 'lighter',
-      large: true,
-      itemStyle: {
-        color: 'rgb(152, 152, 15)'
-      },
-      postEffect: {
-        enable: true
-      },
-      silent: true,
-      dimensions: ['lng', 'lat'],
-      data: []
-    }
-  ]
-};
+import { Button, Input } from 'antd';
+import './index.less';
+import PasswordCheck from '@/components/PasswordCheck';
+import ShuModal from '@/components/ShuModal';
+import ShuQuarterSelect from '@/components/shuQuarterSelect';
+import ShuBackToTop from '@/components/ShuBackToTop';
+import ShuColorPicker from '@/components/ShuColorPicker';
 
 const Main = () => {
-  const [myChart, setMyChart] = useState<any>({});
+  const [psd, setPsd] = useState('');
+  const modalRef = useRef() as any;
 
-  const initChart = useCallback(() => {
-    const dom = document.getElementById('container') as any;
+  const showModal = () => {
+    console.log(modalRef, 'modalRef');
+    modalRef.current.showModal();
+  };
 
-    echarts.registerMap('hangzhou', hzData);
-
-    const chartInstance = (echarts as any).init(dom, null, {
-      renderer: 'canvas',
-      useDirtyRect: false
-    });
-
-    chartInstance.setOption(option);
-
-    setMyChart(chartInstance);
-  }, []);
-
-  useEffect(() => {
-    initChart();
-  }, [initChart]);
-
-  useEffect(() => {
-    if (!myChart) return;
-
-    const getChartData = () => {
-      const { mockData } = mockHzData as any;
-
-      const chartData = [];
-
-      for (let i = 0; i < 20000; i++) {
-        if (!mockData[i]) return;
-
-        const dataItem = [mockData[i].lon, mockData[i].lat];
-
-        chartData.push(dataItem);
-      }
-      myChart.appendData({
-        seriesIndex: 0,
-        data: chartData
-      });
-    };
-
-    myChart.appendData && getChartData();
-  }, [myChart]);
-  return <div className="chart" id="container"></div>;
+  return (
+    <div id="main" className="main">
+      首页
+      <SvgCom iconName="iconqiyeshensu" size="3"></SvgCom>
+      <div style={{ margin: '120px' }}>
+        <IconPicker></IconPicker>
+      </div>
+      <Input value={psd} onChange={(e) => setPsd(e.target.value)}></Input>
+      {/* <PasswordCheck isDynamic={true} password={psd}></PasswordCheck> */}
+      <ShuModal
+        ref={modalRef}
+        trigger={
+          <Button onClick={showModal} type="primary">
+            点击唤起弹框
+          </Button>
+        }
+      >
+        弹框内部内容
+      </ShuModal>
+      <ShuQuarterSelect></ShuQuarterSelect>
+      <ShuBackToTop container="main"></ShuBackToTop>
+      <ShuColorPicker defaultColor="#333"></ShuColorPicker>
+    </div>
+  );
 };
 
 export default Main;
