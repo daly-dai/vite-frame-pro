@@ -6,7 +6,7 @@ import { bColor, colorConfig, gradient, tColor } from './static';
 
 interface Props {
   // 当前颜色
-  modelValue: string;
+  // modelValue: string;
   // 默认颜色
   defaultColor?: string;
   // 禁用状态
@@ -15,19 +15,19 @@ interface Props {
   onChange?: (color: string) => void;
 }
 
-const ShuColorPicker: FC<Props> = ({
-  modelValue,
-  defaultColor,
-  disabled,
-  onChange
-}) => {
+const ShuColorPicker: FC<Props> = ({ defaultColor, disabled, onChange }) => {
   const inputRef = useRef(null);
+
+  const [modelValue, setModelValue] = useState('');
 
   // 面板状态
   const [openStatus, setOpenStatus] = useState(false);
 
   // 切换弹框的状态
   const togglePopoverVisible = (status: boolean) => {
+    // 禁用状态时无法点击
+    if (disabled) return;
+
     setOpenStatus(status);
   };
 
@@ -41,9 +41,12 @@ const ShuColorPicker: FC<Props> = ({
   const showColor = useMemo(() => {
     if (modelValue) {
       return modelValue;
-    } else {
+    }
+    if (defaultColor) {
       return defaultColor;
     }
+
+    return '#333';
   }, [defaultColor, modelValue]);
 
   // 计算属性：显示面板颜色
@@ -58,9 +61,11 @@ const ShuColorPicker: FC<Props> = ({
   // 计算属性：颜色面板
   const colorPanel = useMemo(() => {
     const colorArr = [];
+
     for (const color of colorConfig) {
       colorArr.push(gradient(color[1], color[0], 5));
     }
+
     return colorArr;
   }, []);
 
@@ -68,6 +73,7 @@ const ShuColorPicker: FC<Props> = ({
   const updateValue = (value: string) => {
     onChange && onChange(value);
     setOpenStatus(false);
+    setModelValue(value);
   };
 
   const handleDefaultColor = () => {
@@ -156,6 +162,7 @@ const ShuColorPicker: FC<Props> = ({
       </>
     );
   };
+
   return (
     <div className="m-colorPicker">
       <Popover

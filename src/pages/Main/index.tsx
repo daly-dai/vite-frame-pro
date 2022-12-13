@@ -41,7 +41,7 @@ const Main = () => {
       </ShuModal>
       <ShuQuarterSelect></ShuQuarterSelect>
       <ShuBackToTop container="main"></ShuBackToTop>
-      <ShuColorPicker modelValue="#333"></ShuColorPicker>
+      <ShuColorPicker defaultColor="#333"></ShuColorPicker>
     </div>
   );
 };
