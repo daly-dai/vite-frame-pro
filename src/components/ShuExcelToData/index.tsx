@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Upload } from 'antd';
+import { Button, Popover, Upload } from 'antd';
 
 import * as XLSX from 'xlsx';
 
@@ -16,6 +16,13 @@ interface ShuExcelToDataProps {
   columns?: ColumnType<string>;
   headRows?: number;
   showTable: boolean;
+  triggerContent: React.ReactNode;
+}
+
+interface excelDataType {
+  fullData: string[];
+  tableColumns: any;
+  tableData: any;
 }
 
 const ShuExcelToData: FC<ShuExcelToDataProps> = ({
@@ -24,11 +31,12 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
   showTable
 }) => {
   const [rABS, setRABs] = useState(true);
-  const [excelData, setExcelData] = useState<any>({
+  const [excelData, setExcelData] = useState<excelDataType>({
     fullData: [],
-    header: [],
+    tableColumns: [],
     tableData: []
   });
+  const [popoverVisible, setPopoverVisible] = useState(false);
 
   const beforeUpload = (file: any, fileList: any[]) => {
     const f = fileList[0];
@@ -63,12 +71,69 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
     return false;
   };
 
+  const setAutoTable = () => {
+    const columns = ((excelData.fullData[0] as any) || []).map(
+      (item: string, index: number) => {
+        return {
+          title: item,
+          dataIndex: 'title' + index
+        };
+      }
+    );
+
+    const tableData = (excelData.fullData.slice(headRows - 1) || []).map(
+      (rowItem: any) => {
+        const rowData: any = {};
+
+        (rowItem || []).forEach((element: string, index: number) => {
+          if (!columns[index]) return;
+
+          const key = columns[index].dataIndex;
+
+          rowData[key] = element;
+        });
+
+        return rowData;
+      }
+    );
+
+    setExcelData(
+      produce((draft: excelDataType) => {
+        draft.tableColumns = columns;
+        draft.tableData = tableData;
+      })
+    );
+  };
+
   useUpdateEffect(() => {
-    console.log(excelData);
+    if (!showTable) return;
+
+    if (!columns) {
+      setAutoTable();
+      return;
+    }
+
+    // 目前仅支持一行表头
+    if (columns) {
+      setExcelData(
+        produce((draft: any) => {
+          draft.tableColumns = columns;
+        })
+      );
+    }
   }, [excelData.fullData]);
 
+  const handleClickChange = (open: boolean) => {
+    setPopoverVisible(open);
+  };
+
+  const tablePopover = () => {
+    // const;
+    return <></>;
+  };
+
   return (
-    <>
+    <div className="excel">
       <Upload
         accept={acceptList}
         name="file"
@@ -77,7 +142,15 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
       >
         <Button icon={<UploadOutlined />}>上传文件</Button>
       </Upload>
-    </>
+      <Popover
+        content={tablePopover}
+        trigger="click"
+        open={popoverVisible}
+        onOpenChange={handleClickChange}
+        overlayClassName="selectIconContent"
+        placement="right"
+      />
+    </div>
   );
 };
 
