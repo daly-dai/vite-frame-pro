@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
 import { Button, Upload } from 'antd';
 
@@ -6,6 +6,8 @@ import * as XLSX from 'xlsx';
 
 import './index.less';
 import { ColumnType } from 'antd/lib/table';
+import { useUpdateEffect } from 'ahooks';
+import produce from 'immer';
 
 const acceptList =
   '.excel,.xls,.xlsx,.xlsb,.xlsm,.ods,.csv,.dbf,.dif,.sylk,.office,.spreadsheet';
@@ -13,11 +15,22 @@ const acceptList =
 interface ShuExcelToDataProps {
   columns?: ColumnType<string>;
   headRows?: number;
+  showTable: boolean;
 }
 
-const ShuExcelToData: FC<ShuExcelToDataProps> = ({ columns, headRows = 1 }) => {
+const ShuExcelToData: FC<ShuExcelToDataProps> = ({
+  columns,
+  headRows = 1,
+  showTable
+}) => {
+  const [rABS, setRABs] = useState(true);
+  const [excelData, setExcelData] = useState<any>({
+    fullData: [],
+    header: [],
+    tableData: []
+  });
+
   const beforeUpload = (file: any, fileList: any[]) => {
-    const rABS = true;
     const f = fileList[0];
     const reader = new FileReader();
 
@@ -29,22 +42,30 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({ columns, headRows = 1 }) => {
       const workbook = XLSX.read(data, {
         type: rABS ? 'binary' : 'array'
       });
-      // 假设我们的数据在第一个标签
+
+      // 默认取第一个标签
       const first_worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      // XLSX自带了一个工具把导入的数据转成json
+
+      // 将数据转化为json
       const jsonArr = XLSX.utils.sheet_to_json(first_worksheet, {
-        header: 1
+        header: headRows
       });
 
-      console.log(jsonArr, 8888888);
-      // 通过自定义的方法处理Json，比如加入state来展示
-      // handleImportedJson(jsonArr.slice(1));
+      setExcelData(
+        produce((draft: any) => {
+          draft.fullData = jsonArr;
+        })
+      );
     };
 
     if (rABS) reader.readAsBinaryString(f);
     else reader.readAsArrayBuffer(f);
     return false;
   };
+
+  useUpdateEffect(() => {
+    console.log(excelData);
+  }, [excelData.fullData]);
 
   return (
     <>
