@@ -2,12 +2,10 @@ import React, {
   Children,
   forwardRef,
   useImperativeHandle,
-  useMemo,
   useState
 } from 'react';
 import { Button, Modal } from 'antd';
 import './index.less';
-import { findIndex, isArray, isObject } from 'lodash-es';
 
 interface Props {
   /**

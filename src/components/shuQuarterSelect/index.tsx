@@ -7,7 +7,7 @@ import {
 } from '@ant-design/icons';
 
 import './index.less';
-import { getFullQuarter } from './static';
+import { getFullQuarter } from './staticData';
 
 const quarterList = [
   {

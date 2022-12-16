@@ -1,7 +1,7 @@
 import { UpOutlined } from '@ant-design/icons';
 import { debounce } from 'lodash-es';
 import React, { useEffect, useState } from 'react';
-import SvgCom from '../SvgCom';
+import SvgCom from '../ShuSvgCom';
 import './index.less';
 
 interface BackToTopBtnProps {

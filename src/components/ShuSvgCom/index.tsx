@@ -11,7 +11,7 @@ interface IconProps {
 
 const measureUnit = ['px', 'rem', 'em', 'vw', 'vh'];
 
-const SvgCom: FC<IconProps> = ({
+const ShuSvgCom: FC<IconProps> = ({
   iconName,
   customClass = '',
   color,
@@ -60,4 +60,4 @@ const SvgCom: FC<IconProps> = ({
   );
 };
 
-export default SvgCom;
+export default ShuSvgCom;

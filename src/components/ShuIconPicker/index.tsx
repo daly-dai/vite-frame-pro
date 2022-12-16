@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Popover, message } from 'antd';
 
 import iconJson from '@/assets/icon-font/iconfont.json';
-import SvgCom from '../SvgCom';
+import SvgCom from '../ShuSvgCom';
 import './index.less';
 
 interface IconNameList {
@@ -10,7 +10,7 @@ interface IconNameList {
   iconKey: string;
 }
 
-const IconPicker = () => {
+const ShuIconPicker = () => {
   const [iconNameList, setIconNameList] = useState<IconNameList[]>([]);
   const [iconName, setIconName] = useState<string>('');
   const [popoverVisible, setPopoverVisible] = useState(false);
@@ -92,4 +92,4 @@ const IconPicker = () => {
   );
 };
 
-export default IconPicker;
+export default ShuIconPicker;

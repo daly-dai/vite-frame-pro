@@ -20,7 +20,10 @@ interface PsdCount {
 }
 
 // 密码校验
-const PasswordCheck: FC<PasswordProps> = ({ password, isDynamic = false }) => {
+const ShuPasswordCheck: FC<PasswordProps> = ({
+  password,
+  isDynamic = false
+}) => {
   const [psdCountList, setPsdCountList] = useState<PsdCount[]>([]);
 
   const checkStr = (str: string, type: string) => {
@@ -152,4 +155,4 @@ const PasswordCheck: FC<PasswordProps> = ({ password, isDynamic = false }) => {
   );
 };
 
-export default PasswordCheck;
+export default ShuPasswordCheck;
