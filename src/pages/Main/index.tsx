@@ -10,6 +10,7 @@ import ShuModal from '@/components/ShuModal';
 import ShuQuarterSelect from '@/components/shuQuarterSelect';
 import ShuBackToTop from '@/components/ShuBackToTop';
 import ShuColorPicker from '@/components/ShuColorPicker';
+import ShuExcelToData from '@/components/ShuExcelToData';
 
 const Main = () => {
   const [psd, setPsd] = useState('');
@@ -39,9 +40,10 @@ const Main = () => {
       >
         弹框内部内容
       </ShuModal>
-      <ShuQuarterSelect></ShuQuarterSelect>
+      {/* <ShuQuarterSelect></ShuQuarterSelect>
       <ShuBackToTop container="main"></ShuBackToTop>
-      <ShuColorPicker defaultColor="#333"></ShuColorPicker>
+      <ShuColorPicker defaultColor="#333"></ShuColorPicker> */}
+      <ShuExcelToData></ShuExcelToData>
     </div>
   );
 };

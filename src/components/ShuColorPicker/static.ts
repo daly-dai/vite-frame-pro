@@ -1,3 +1,14 @@
+// 下拉框
+export const options = [
+  {
+    label: 'RGB',
+    value: 'RGB'
+  },
+  {
+    label: 'HEX',
+    value: 'HEX'
+  }
+];
 // 主题颜色
 export const tColor = [
   '#000000',

@@ -1,8 +1,8 @@
-import { Popover } from 'antd';
+import { Input, Popover, Select } from 'antd';
 import React, { FC, useMemo, useRef, useState } from 'react';
 
 import './index.less';
-import { bColor, colorConfig, gradient, tColor } from './static';
+import { bColor, colorConfig, gradient, options, tColor } from './static';
 
 interface Props {
   // 当前颜色
@@ -164,13 +164,14 @@ const ShuColorPicker: FC<Props> = ({ defaultColor, disabled, onChange }) => {
   };
 
   return (
-    <div className="m-colorPicker">
+    <div className="colorPicker">
       <Popover
         open={openStatus}
         trigger="click"
         onOpenChange={togglePopoverVisible}
         content={colorPickerContent}
         overlayClassName="colorContent"
+        placement="bottom"
       >
         <div
           className="colorBtn"
