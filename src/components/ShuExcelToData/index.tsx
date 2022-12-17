@@ -1,6 +1,6 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Popover, Upload } from 'antd';
+import { Button, Popover, Upload, Table } from 'antd';
 
 import * as XLSX from 'xlsx';
 
@@ -15,8 +15,8 @@ const acceptList =
 interface ShuExcelToDataProps {
   columns?: ColumnType<string>;
   headRows?: number;
-  showTable: boolean;
-  triggerContent: React.ReactNode;
+  showTable?: boolean;
+  triggerContent?: React.ReactNode;
 }
 
 interface excelDataType {
@@ -28,7 +28,7 @@ interface excelDataType {
 const ShuExcelToData: FC<ShuExcelToDataProps> = ({
   columns,
   headRows = 1,
-  showTable
+  showTable = true
 }) => {
   const [rABS, setRABs] = useState(true);
   const [excelData, setExcelData] = useState<excelDataType>({
@@ -59,6 +59,8 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
         header: headRows
       });
 
+      console.log(jsonArr, 888888888);
+
       setExcelData(
         produce((draft: any) => {
           draft.fullData = jsonArr;
@@ -71,42 +73,49 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
     return false;
   };
 
-  const setAutoTable = () => {
-    const columns = ((excelData.fullData[0] as any) || []).map(
-      (item: string, index: number) => {
-        return {
-          title: item,
-          dataIndex: 'title' + index
-        };
-      }
-    );
+  useEffect(() => {
+    if (!excelData.fullData?.length) return;
 
-    const tableData = (excelData.fullData.slice(headRows - 1) || []).map(
-      (rowItem: any) => {
-        const rowData: any = {};
-
-        (rowItem || []).forEach((element: string, index: number) => {
-          if (!columns[index]) return;
-
-          const key = columns[index].dataIndex;
-
-          rowData[key] = element;
-        });
-
-        return rowData;
-      }
-    );
-
-    setExcelData(
-      produce((draft: excelDataType) => {
-        draft.tableColumns = columns;
-        draft.tableData = tableData;
-      })
-    );
-  };
-
-  useUpdateEffect(() => {
     if (!showTable) return;
+
+    const setAutoTable = () => {
+      const columns = ((excelData.fullData[0] as any) || []).map(
+        (item: string, index: number) => {
+          return {
+            title: item,
+            dataIndex: 'title' + index
+          };
+        }
+      );
+
+      const tableData = (excelData.fullData.slice(headRows - 1) || []).map(
+        (rowItem: any) => {
+          const rowData: any = {};
+          rowData['id'] = new Date().getTime();
+
+          (rowItem || []).forEach((element: string, index: number) => {
+            if (!columns[index]) return;
+
+            const key = columns[index].dataIndex;
+
+            rowData[key] = element;
+          });
+
+          return rowData;
+        }
+      );
+
+      setExcelData(
+        produce((draft: excelDataType) => {
+          draft.tableColumns = columns;
+          draft.tableData = tableData;
+        })
+      );
+
+      setPopoverVisible(true);
+    };
+
+    console.log(columns, 777777);
 
     if (!columns) {
       setAutoTable();
@@ -121,6 +130,7 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [excelData.fullData]);
 
   const handleClickChange = (open: boolean) => {
@@ -129,7 +139,12 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
 
   const tablePopover = () => {
     // const;
-    return <></>;
+    return (
+      <Table
+        columns={excelData.tableColumns}
+        dataSource={excelData.tableData}
+      ></Table>
+    );
   };
 
   return (

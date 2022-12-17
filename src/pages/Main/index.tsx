@@ -43,7 +43,7 @@ const Main = () => {
       <ShuQuarterSelect></ShuQuarterSelect>
       <ShuBackToTop container="main"></ShuBackToTop>
       <ShuColorPicker defaultColor="#333"></ShuColorPicker>
-      <ShuExcelToData showTable={false}></ShuExcelToData>
+      <ShuExcelToData></ShuExcelToData>
     </div>
   );
 };
