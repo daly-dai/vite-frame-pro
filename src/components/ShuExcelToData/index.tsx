@@ -1,42 +1,75 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useMemo, useState } from 'react';
 import { UploadOutlined } from '@ant-design/icons';
-import { Button, Popover, Upload, Table } from 'antd';
+import { Button, Popover, Upload, Table, Drawer } from 'antd';
 
 import * as XLSX from 'xlsx';
 
 import './index.less';
-import { ColumnType } from 'antd/lib/table';
 import { useUpdateEffect } from 'ahooks';
 import produce from 'immer';
+import { ShuExcelToDataProps } from '../types/ShuExcelToData';
+import useTableHook from './hook/useTableHook';
+import { EditableProTable } from '@ant-design/pro-components';
 
 const acceptList =
   '.excel,.xls,.xlsx,.xlsb,.xlsm,.ods,.csv,.dbf,.dif,.sylk,.office,.spreadsheet';
 
-interface ShuExcelToDataProps {
-  columns?: ColumnType<string>;
-  headRows?: number;
-  showTable?: boolean;
-  triggerContent?: React.ReactNode;
-}
-
-interface excelDataType {
-  fullData: string[];
-  tableColumns: any;
-  tableData: any;
-}
-
 const ShuExcelToData: FC<ShuExcelToDataProps> = ({
   columns,
   headRows = 1,
-  showTable = true
+  showPopover = true,
+  showDrawer,
+  tableProps,
+  trigger
 }) => {
   const [rABS, setRABs] = useState(true);
-  const [excelData, setExcelData] = useState<excelDataType>({
-    fullData: [],
-    tableColumns: [],
-    tableData: []
-  });
   const [popoverVisible, setPopoverVisible] = useState(false);
+
+  const optionColumn: any = {
+    title: '操作',
+    valueType: 'option',
+    width: 200,
+    fixed: 'right',
+    render: (
+      text: any,
+      record: { id: string | number },
+      _: any,
+      action: { startEditable: (arg0: any) => void }
+    ) => [
+      <a
+        key="editable"
+        onClick={() => {
+          action?.startEditable?.(record.id);
+        }}
+      >
+        编辑
+      </a>,
+      <a
+        key="delete"
+        onClick={() => {
+          deleteTableData(record.id);
+        }}
+      >
+        删除
+      </a>
+    ]
+  };
+
+  const {
+    excelData,
+    setExcelData,
+    setTableData,
+    editableKeys,
+    setEditableRowKeys,
+    deleteTableData,
+    editTableData
+  } = useTableHook({
+    headRows,
+    columns,
+    optionColumn,
+    showPopover,
+    showDrawer
+  });
 
   const beforeUpload = (file: any, fileList: any[]) => {
     const f = fileList[0];
@@ -59,8 +92,6 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
         header: headRows
       });
 
-      console.log(jsonArr, 888888888);
-
       setExcelData(
         produce((draft: any) => {
           draft.fullData = jsonArr;
@@ -73,77 +104,50 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
     return false;
   };
 
-  useEffect(() => {
-    if (!excelData.fullData?.length) return;
-
-    if (!showTable) return;
-
-    const setAutoTable = () => {
-      const columns = ((excelData.fullData[0] as any) || []).map(
-        (item: string, index: number) => {
-          return {
-            title: item,
-            dataIndex: 'title' + index
-          };
-        }
-      );
-
-      const tableData = (excelData.fullData.slice(headRows - 1) || []).map(
-        (rowItem: any) => {
-          const rowData: any = {};
-          rowData['id'] = new Date().getTime();
-
-          (rowItem || []).forEach((element: string, index: number) => {
-            if (!columns[index]) return;
-
-            const key = columns[index].dataIndex;
-
-            rowData[key] = element;
-          });
-
-          return rowData;
-        }
-      );
-
-      setExcelData(
-        produce((draft: excelDataType) => {
-          draft.tableColumns = columns;
-          draft.tableData = tableData;
-        })
-      );
-
-      setPopoverVisible(true);
-    };
-
-    console.log(columns, 777777);
-
-    if (!columns) {
-      setAutoTable();
-      return;
-    }
-
-    // 目前仅支持一行表头
-    if (columns) {
-      setExcelData(
-        produce((draft: any) => {
-          draft.tableColumns = columns;
-        })
-      );
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [excelData.fullData]);
-
   const handleClickChange = (open: boolean) => {
     setPopoverVisible(open);
   };
 
-  const tablePopover = () => {
-    // const;
+  const showPopContent = useMemo(() => {
+    if (showDrawer) return false;
+
+    return showPopover;
+  }, [showDrawer, showPopover]);
+
+  // 展示弹框
+  useUpdateEffect(() => {
+    setPopoverVisible(true);
+  }, [excelData.tableData]);
+
+  const TablePopover = () => {
     return (
-      <Table
-        columns={excelData.tableColumns}
-        dataSource={excelData.tableData}
-      ></Table>
+      <div className="popoverTable">
+        <EditableProTable<any>
+          {...tableProps}
+          rowKey="id"
+          headerTitle="可编辑表格"
+          maxLength={5}
+          scroll={{ x: 'max-content' }}
+          recordCreatorProps={{
+            position: 'top',
+            record: () => ({ id: (Math.random() * 1000000).toFixed(0) })
+          }}
+          loading={false}
+          columns={excelData.tableColumns}
+          value={excelData.tableData}
+          onChange={setTableData}
+          editable={{
+            type: 'multiple',
+            editableKeys,
+            onSave: async (rowKey, data, row) => {
+              if (data === row) return;
+
+              editTableData(rowKey as string, data);
+            },
+            onChange: setEditableRowKeys
+          }}
+        />
+      </div>
     );
   };
 
@@ -155,16 +159,37 @@ const ShuExcelToData: FC<ShuExcelToDataProps> = ({
         showUploadList={false}
         beforeUpload={beforeUpload}
       >
-        <Button icon={<UploadOutlined />}>上传文件</Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button icon={<UploadOutlined />}>上传文件</Button>
+        )}
       </Upload>
-      <Popover
-        content={tablePopover}
-        trigger="click"
-        open={popoverVisible}
-        onOpenChange={handleClickChange}
-        overlayClassName="selectIconContent"
-        placement="right"
-      />
+
+      {showDrawer ? (
+        <Drawer
+          placement="right"
+          onClose={() => handleClickChange(false)}
+          open={popoverVisible}
+          size="large"
+        >
+          <TablePopover></TablePopover>
+        </Drawer>
+      ) : (
+        ''
+      )}
+
+      {showPopContent ? (
+        <Popover
+          content={TablePopover}
+          trigger="click"
+          open={popoverVisible}
+          onOpenChange={handleClickChange}
+          overlayClassName="excelTable"
+        />
+      ) : (
+        ''
+      )}
     </div>
   );
 };
