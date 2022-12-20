@@ -16,11 +16,6 @@ const Main = () => {
   const [psd, setPsd] = useState('');
   const modalRef = useRef() as any;
 
-  const showModal = () => {
-    console.log(modalRef, 'modalRef');
-    modalRef.current.showModal();
-  };
-
   return (
     <div id="main" className="main">
       首页
@@ -28,16 +23,7 @@ const Main = () => {
       <div style={{ margin: '120px' }}>
         <IconPicker></IconPicker>
       </div>
-      {/* <Input value={psd} onChange={(e) => setPsd(e.target.value)}></Input>
-      <PasswordCheck password={psd}></PasswordCheck> */}
-      <ShuModal
-        ref={modalRef}
-        trigger={
-          <Button onClick={showModal} type="primary">
-            点击唤起弹框
-          </Button>
-        }
-      >
+      <ShuModal trigger={<Button type="primary">点击唤起弹框</Button>}>
         弹框内部内容
       </ShuModal>
       <ShuQuarterSelect></ShuQuarterSelect>

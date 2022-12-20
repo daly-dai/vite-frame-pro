@@ -66,7 +66,9 @@ const ShuModal = forwardRef((props: Props, ref: any) => {
 
   return (
     <>
-      {trigger ? trigger : <Button onClick={showModal}>{triggerText}</Button>}
+      <div onClick={showModal}>
+        {trigger ? trigger : <Button>{triggerText}</Button>}
+      </div>
       <Modal
         // {...props}
         className="base-modal"
