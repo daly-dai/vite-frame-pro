@@ -7,7 +7,7 @@ import * as XLSX from 'xlsx';
 import './index.less';
 import { useUpdateEffect } from 'ahooks';
 import produce from 'immer';
-import { ShuExcelToDataProps } from '../types/ShuExcelToData';
+import { ShuExcelToDataProps } from './type/ShuExcelToData';
 import useTableHook from './hook/useTableHook';
 import { EditableProTable } from '@ant-design/pro-components';
 

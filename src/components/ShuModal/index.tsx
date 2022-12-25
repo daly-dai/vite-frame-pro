@@ -1,9 +1,4 @@
-import React, {
-  Children,
-  forwardRef,
-  useImperativeHandle,
-  useState
-} from 'react';
+import React, { forwardRef, useState } from 'react';
 import { Button, Modal } from 'antd';
 import './index.less';
 
@@ -39,22 +34,11 @@ interface Props {
  * Modal 组件
  * @link [antd modal](https://ant.design/components/modal-cn/)
  */
-const ShuModal = forwardRef((props: Props, ref: any) => {
+const ShuModal = forwardRef((props: Props) => {
   const { centered, onOk, okText, cancelText, children, trigger, triggerText } =
     props;
 
   const [visible, setVisible] = useState(false);
-
-  useImperativeHandle(ref, () => {
-    return {
-      showModal: () => {
-        setVisible(true);
-      },
-      closeModal: () => {
-        setVisible(false);
-      }
-    };
-  });
 
   const showModal = () => {
     setVisible(true);

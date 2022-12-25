@@ -1,4 +1,7 @@
-import { UseTableHook, excelDataType } from '@/components/types/ShuExcelToData';
+import {
+  UseTableHook,
+  excelDataType
+} from '@/components/ShuExcelToData/type/ShuExcelToData';
 import { uuid } from '@/utils/tool';
 import { useUpdateEffect } from 'ahooks';
 import produce from 'immer';
