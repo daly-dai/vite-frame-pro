@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PermissionMange = () => {
-  return <>权限管理</>;
+  return <div className="permission">权限管理</div>;
 };
 
 export default PermissionMange;

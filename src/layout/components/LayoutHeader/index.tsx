@@ -1,46 +1,133 @@
 import React from 'react';
-import { BellOutlined, CodeOutlined, UserOutlined } from '@ant-design/icons';
-import { Badge, Dropdown, Menu, Popover } from 'antd';
+import {
+  BellOutlined,
+  CodeOutlined,
+  SmileOutlined,
+  UserOutlined
+} from '@ant-design/icons';
+import { Badge, Dropdown, Popover } from 'antd';
+import type { MenuProps } from 'antd';
+
 import './index.less';
 
-const DropdownMenu: any = () => {
-  return (
-    <Menu
-      items={[
-        {
-          key: '1',
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.antgroup.com"
-            >
-              1st menu item
-            </a>
-          )
-        },
-        {
-          key: '3',
-          label: (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.luohanacademy.com"
-            >
-              3rd menu item (disabled)
-            </a>
-          ),
-          disabled: true
-        },
-        {
-          key: '4',
-          danger: true,
-          label: 'a danger item'
-        }
-      ]}
-    />
-  );
-};
+const dropdownMenu: MenuProps['items'] = [
+  {
+    key: '1',
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.antgroup.com"
+      >
+        1st menu item
+      </a>
+    )
+  },
+  {
+    key: '3',
+    label: (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://www.luohanacademy.com"
+      >
+        3rd menu item (disabled)
+      </a>
+    ),
+    disabled: true
+  },
+  {
+    key: '4',
+    danger: true,
+    label: 'a danger item'
+  }
+];
+
+// const items: MenuProps['items'] = [
+//   {
+//     key: '1',
+//     label: (
+//       <a
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         href="https://www.antgroup.com"
+//       >
+//         1st menu item
+//       </a>
+//     )
+//   },
+//   {
+//     key: '2',
+//     label: (
+//       <a
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         href="https://www.aliyun.com"
+//       >
+//         2nd menu item (disabled)
+//       </a>
+//     ),
+//     icon: <SmileOutlined />,
+//     disabled: true
+//   },
+//   {
+//     key: '3',
+//     label: (
+//       <a
+//         target="_blank"
+//         rel="noopener noreferrer"
+//         href="https://www.luohanacademy.com"
+//       >
+//         3rd menu item (disabled)
+//       </a>
+//     ),
+//     disabled: true
+//   },
+//   {
+//     key: '4',
+//     danger: true,
+//     label: 'a danger item'
+//   }
+// ];
+
+// const DropdownMenu: any = () => {
+//   return (
+//     <Menu
+//       items={[
+//         {
+//           key: '1',
+//           label: (
+//             <a
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               href="https://www.antgroup.com"
+//             >
+//               1st menu item
+//             </a>
+//           )
+//         },
+//         {
+//           key: '3',
+//           label: (
+//             <a
+//               target="_blank"
+//               rel="noopener noreferrer"
+//               href="https://www.luohanacademy.com"
+//             >
+//               3rd menu item (disabled)
+//             </a>
+//           ),
+//           disabled: true
+//         },
+//         {
+//           key: '4',
+//           danger: true,
+//           label: 'a danger item'
+//         }
+//       ]}
+//     />
+//   );
+// };
 
 const LayoutHeader = () => {
   const content = (
@@ -73,7 +160,7 @@ const LayoutHeader = () => {
         </div>
         <div className="header-right-theme"></div>
         <div className="header-right-user">
-          <Dropdown menu={DropdownMenu}>
+          <Dropdown menu={{ items: dropdownMenu }}>
             <UserOutlined />
           </Dropdown>
         </div>

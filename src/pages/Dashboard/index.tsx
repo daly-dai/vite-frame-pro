@@ -18,13 +18,7 @@ const DashBoardPage: FC = () => {
     };
   }, []);
 
-  return (
-    <div>
-      <Overview loading={loading} />
-      {/* <SalePercent loading={loading} />
-      <TimeLine loading={loading} /> */}
-    </div>
-  );
+  return <div>驾驶舱</div>;
 };
 
 export default DashBoardPage;

@@ -1,6 +1,12 @@
 import { FunctionRule, RouteObject } from '@/types/router';
-import { arrayToTree } from '@utils/tree';
-import { concat } from 'lodash-es';
+import {
+  arrayToTree,
+  getTreeMap,
+  operationAttrToNodes,
+  removeEmptyChildren
+} from '@utils/tree';
+import { cloneDeep, concat } from 'lodash-es';
+
 import disposeRouter from '../../hooks/useDisposeRouter';
 
 const staticPath = '/src/service/router/';
@@ -11,11 +17,20 @@ let staticRoutes: RouteObject[] = [];
 function rootRouteData(modules: any): RouteObject[] {
   const root = (modules[`${staticPath}root.ts`] as any).default;
 
-  root.forEach((item: RouteObject) => {
-    item['parentId'] = '';
-  });
+  function rootMap(arr: RouteObject[], key: string) {
+    arr.forEach((item: RouteObject) => {
+      item['parentId'] = key;
 
-  return root;
+      if (item?.children?.length) {
+        rootMap(item.children, item.path as string);
+      }
+    });
+  }
+
+  const result = cloneDeep(root);
+  rootMap(result, '');
+
+  return result;
 }
 
 // 生成路由配置信息
@@ -25,6 +40,7 @@ function generatePathConfig(loading?: any): RouteObject[] {
   const modules: any = import.meta.glob('/src/service/router/**/*.ts', {
     eager: true
   });
+
   let modulesList: RouteObject[] = rootRouteData(modules);
 
   Object.keys(modules).forEach((modulesPath) => {
@@ -50,7 +66,14 @@ function generatePathConfig(loading?: any): RouteObject[] {
     modulesList = concat(modulesList, routerData);
   });
 
-  const result: RouteObject[] = arrayToTree(modulesList, 'path');
+  const routerMap = getTreeMap(cloneDeep(modulesList));
+  operationAttrToNodes(routerMap, (item: RouteObject) => {
+    item.children = [];
+  });
+
+  const result: RouteObject[] = removeEmptyChildren(
+    arrayToTree(routerMap, 'path')
+  );
 
   return result;
 }

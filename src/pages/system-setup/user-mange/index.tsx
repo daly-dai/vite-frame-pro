@@ -1,7 +1,7 @@
 import React from 'react';
 
 const UserMange = () => {
-  return <>用户管理</>;
+  return <div>用户管理</div>;
 };
 
 export default UserMange;

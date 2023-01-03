@@ -1,75 +1,80 @@
-import {
-  AppstoreOutlined,
-  MailOutlined,
-  SettingOutlined
-} from '@ant-design/icons';
+import { AppstoreOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+
+import ShuIcon from '@/components/ShuIcon';
 import './index.less';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
-function getItem(
-  label: React.ReactNode,
-  key: React.Key,
-  icon?: React.ReactNode,
-  children?: MenuItem[],
-  type?: 'group'
-): MenuItem {
-  return {
-    key,
-    icon,
-    children,
-    label,
-    type
-  } as MenuItem;
-}
-interface MenuItemTypes {
-  id: '';
-  name: '';
-  label: '';
-  iconName: '';
-  children: MenuItemTypes[];
-}
-// const menuStashList = useState();
+// interface MenuItemTypes {
+//   id: '';
+//   name: '';
+//   label: '';
+//   iconName: '';
+//   children: MenuItemTypes[];
+// }
 
-const items: MenuItem[] = [
-  getItem('Navigation One', 'sub1', <MailOutlined />, [
-    getItem('Option 1', '1'),
-    getItem('Option 2', '2'),
-    getItem('Option 3', '3'),
-    getItem('Option 4', '4')
-  ]),
-  getItem('Navigation Two', 'sub2', <AppstoreOutlined />, [
-    getItem('Option 5', '5'),
-    getItem('Option 6', '6'),
-    getItem('Submenu', 'sub3', null, [
-      getItem('Option 7', '7'),
-      getItem('Option 8', '8')
-    ])
-  ]),
-  getItem('Navigation Three', 'sub4', <SettingOutlined />, [
-    getItem('Option 9', '9'),
-    getItem('Option 10', '10'),
-    getItem('Option 11', '11'),
-    getItem('Option 12', '12')
-  ])
-];
+// function getItem(
+//   label: React.ReactNode,
+//   key: React.Key,
+//   icon?: React.ReactNode,
+//   children?: MenuItem[],
+//   type?: 'group'
+// ): MenuItem {
+//   return {
+//     key,
+//     icon,
+//     children,
+//     label,
+//     type
+//   } as MenuItem;
+// }
 
-const authTree = [
+const asideMenu = [
   {
-    icon: '',
-    path: '',
-    pathName: '',
-    children: []
+    icon: <ShuIcon icon="MailOutlined" />,
+    key: 'home',
+    label: '首页'
+  },
+  {
+    icon: <ShuIcon icon="AppstoreOutlined" />,
+    key: 'dashboard',
+    label: '驾驶舱'
+  },
+  {
+    icon: <ShuIcon icon="AppstoreOutlined" />,
+    key: 'systemSetup',
+    label: '系统设置',
+    children: [
+      {
+        icon: <AppstoreOutlined />,
+        key: 'permission-mange',
+        label: '权限设置'
+      },
+      {
+        icon: <AppstoreOutlined />,
+        key: 'role-mange',
+        label: '角色设置'
+      },
+      {
+        icon: <AppstoreOutlined />,
+        key: 'user-mange',
+        label: '用户设置'
+      }
+    ]
   }
 ];
+
 // submenu keys of first level
 const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
 
 const LayoutSider = () => {
-  const [openKeys, setOpenKeys] = useState(['sub1']);
+  const navigate = useNavigate();
+  const location = useLocation();
 
+  const [openKeys, setOpenKeys] = useState(['sub1']);
   const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -80,14 +85,45 @@ const LayoutSider = () => {
     }
   };
 
+  const clickAsideMenu = ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    item,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    key,
+    keyPath
+  }: {
+    item: any;
+    key: string;
+    keyPath: string[];
+    domEvent: any;
+  }) => {
+    if (!keyPath?.length) return '';
+
+    if (keyPath.length === 1) {
+      navigate(`/${keyPath[0]}`);
+      return;
+    }
+
+    console.log(keyPath, 'keyPath');
+    const routerPath = keyPath.reverse().join('/');
+
+    navigate(`/${routerPath}`);
+  };
+
+  // 菜单回显
+  useEffect(() => {
+    console.log(location, 'location');
+  }, [location]);
+
   return (
     <div className="sider">
       <Menu
+        onClick={clickAsideMenu}
         mode="inline"
         openKeys={openKeys}
         onOpenChange={onOpenChange}
         style={{ width: 220 }}
-        items={items}
+        items={asideMenu}
       />
     </div>
   );
