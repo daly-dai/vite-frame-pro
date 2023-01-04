@@ -5,7 +5,7 @@ export default [
     meta: {
       title: '权限设置'
     },
-    element: () => import('@pages/system-setup/index')
+    element: () => import('@pages/system-setup/permission-mange/index')
   },
   {
     path: 'role-mange',
@@ -13,7 +13,7 @@ export default [
     meta: {
       title: '角色设置'
     },
-    element: () => import('@pages/system-setup/index')
+    element: () => import('@pages/system-setup/role-mange/index')
   },
   {
     path: 'user-mange',
@@ -21,6 +21,6 @@ export default [
     meta: {
       title: '用户设置'
     },
-    element: () => import('@pages/system-setup/index')
+    element: () => import('@pages/system-setup/user-mange/index')
   }
 ];

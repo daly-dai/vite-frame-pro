@@ -17,9 +17,8 @@ const RouterTree = () => {
     }
   }, [userState.token]);
 
-  const appRoutes = [...defaultRoutes, ...permissionRoutes];
+  const appRoutes = [...permissionRoutes, ...defaultRoutes];
 
-  console.log(appRoutes, 'appRoutes');
   return useRoutes(appRoutes);
 };
 

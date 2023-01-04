@@ -1,36 +1,11 @@
 import { AppstoreOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
-import React, { useEffect, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import ShuIcon from '@/components/ShuIcon';
 import './index.less';
-
-type MenuItem = Required<MenuProps>['items'][number];
-
-// interface MenuItemTypes {
-//   id: '';
-//   name: '';
-//   label: '';
-//   iconName: '';
-//   children: MenuItemTypes[];
-// }
-
-// function getItem(
-//   label: React.ReactNode,
-//   key: React.Key,
-//   icon?: React.ReactNode,
-//   children?: MenuItem[],
-//   type?: 'group'
-// ): MenuItem {
-//   return {
-//     key,
-//     icon,
-//     children,
-//     label,
-//     type
-//   } as MenuItem;
-// }
+import { filter } from 'lodash-es';
 
 const asideMenu = [
   {
@@ -68,13 +43,13 @@ const asideMenu = [
 ];
 
 // submenu keys of first level
-const rootSubmenuKeys = ['sub1', 'sub2', 'sub4'];
+const rootSubmenuKeys: string[] = [];
 
 const LayoutSider = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [openKeys, setOpenKeys] = useState(['sub1']);
+  const [openKeys, setOpenKeys] = useState<string[]>(['sub1']);
   const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
     const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -104,20 +79,37 @@ const LayoutSider = () => {
       return;
     }
 
-    console.log(keyPath, 'keyPath');
     const routerPath = keyPath.reverse().join('/');
 
     navigate(`/${routerPath}`);
   };
 
-  // 菜单回显
-  useEffect(() => {
-    console.log(location, 'location');
+  const defaultSelectedKeys: any = useMemo(() => {
+    const { pathname } = location;
+    const pathList = filter(pathname.split('/'), (item) => {
+      return item && item.trim();
+    });
+
+    return pathList;
+  }, [location]);
+
+  useMemo(() => {
+    const { pathname } = location;
+    const pathList = filter(pathname.split('/'), (item) => {
+      return item && item.trim();
+    });
+
+    if (pathList?.length === 1) return;
+
+    const openKeysList = pathList.splice(0, pathList.length - 1) as string[];
+
+    setOpenKeys(openKeysList);
   }, [location]);
 
   return (
     <div className="sider">
       <Menu
+        defaultSelectedKeys={defaultSelectedKeys}
         onClick={clickAsideMenu}
         mode="inline"
         openKeys={openKeys}
