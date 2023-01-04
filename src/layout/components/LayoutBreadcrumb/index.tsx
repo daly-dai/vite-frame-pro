@@ -1,20 +1,25 @@
 import { Breadcrumb } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import './index.less';
+import appStore, { CurrentPath } from '@/store/appStore';
+import { useSnapshot } from 'valtio';
 
 const LayoutBreadcrumb = () => {
+  const appState = useSnapshot(appStore.state);
+
+  const breadcrumbList = useMemo(() => {
+    if (!appState?.currentPath?.length) return [];
+
+    return appState?.currentPath;
+  }, [appState?.currentPath]);
+
   return (
     <div className="breadcrumb">
       <Breadcrumb>
-        <Breadcrumb.Item>Home</Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <a href="">Application Center</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <a href="">Application List</a>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>An Application</Breadcrumb.Item>
+        {breadcrumbList.map((item: CurrentPath) => (
+          <Breadcrumb.Item key={item.key}>{item.label}</Breadcrumb.Item>
+        ))}
       </Breadcrumb>
     </div>
   );
