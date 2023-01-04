@@ -1,53 +1,19 @@
-import { AppstoreOutlined } from '@ant-design/icons';
 import { Menu, MenuProps } from 'antd';
 import React, { useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-
-import ShuIcon from '@/components/ShuIcon';
-import './index.less';
 import { filter } from 'lodash-es';
 
-const asideMenu = [
-  {
-    icon: <ShuIcon icon="MailOutlined" />,
-    key: 'home',
-    label: '首页'
-  },
-  {
-    icon: <ShuIcon icon="AppstoreOutlined" />,
-    key: 'dashboard',
-    label: '驾驶舱'
-  },
-  {
-    icon: <ShuIcon icon="AppstoreOutlined" />,
-    key: 'systemSetup',
-    label: '系统设置',
-    children: [
-      {
-        icon: <AppstoreOutlined />,
-        key: 'permission-mange',
-        label: '权限设置'
-      },
-      {
-        icon: <AppstoreOutlined />,
-        key: 'role-mange',
-        label: '角色设置'
-      },
-      {
-        icon: <AppstoreOutlined />,
-        key: 'user-mange',
-        label: '用户设置'
-      }
-    ]
-  }
-];
+import './index.less';
+import appStore from '@/store/appStore';
+import { useSnapshot } from 'valtio';
 
-// submenu keys of first level
 const rootSubmenuKeys: string[] = [];
 
 const LayoutSider = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { state } = appStore;
+  const appState = useSnapshot(state);
 
   const [openKeys, setOpenKeys] = useState<string[]>(['sub1']);
   const onOpenChange: MenuProps['onOpenChange'] = (keys) => {
@@ -105,6 +71,14 @@ const LayoutSider = () => {
 
     setOpenKeys(openKeysList);
   }, [location]);
+
+  const asideMenu = useMemo(() => {
+    if (appState?.asideMenu && appState?.asideMenu.length) {
+      return appState?.asideMenu;
+    }
+
+    return [];
+  }, [appState?.asideMenu]);
 
   return (
     <div className="sider">

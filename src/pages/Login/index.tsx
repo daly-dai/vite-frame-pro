@@ -1,17 +1,57 @@
 import React, { useEffect } from 'react';
-import styles from './Login.module.less';
 import { Form, Input, Button } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
+
 import userStore from '@/store/userStore';
+import ShuIcon from '@/components/ShuIcon';
+import styles from './Login.module.less';
+import appStore from '@/store/appStore';
+
+const asideMenu = [
+  {
+    icon: <ShuIcon icon="MailOutlined" />,
+    key: 'home',
+    label: '首页'
+  },
+  {
+    icon: <ShuIcon icon="AppstoreOutlined" />,
+    key: 'dashboard',
+    label: '驾驶舱'
+  },
+  {
+    icon: <ShuIcon icon="AppstoreOutlined" />,
+    key: 'systemSetup',
+    label: '系统设置',
+    children: [
+      {
+        icon: <ShuIcon icon="AppstoreOutlined" />,
+        key: 'permission-mange',
+        label: '权限设置'
+      },
+      {
+        icon: <ShuIcon icon="AppstoreOutlined" />,
+        key: 'role-mange',
+        label: '角色设置'
+      },
+      {
+        icon: <ShuIcon icon="AppstoreOutlined" />,
+        key: 'user-mange',
+        label: '用户设置'
+      }
+    ]
+  }
+];
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = userStore;
+  const { setAsideMenu } = appStore;
   const [form] = Form.useForm();
 
   const handleFormFinish = () => {
     login('setToken');
+    setAsideMenu(asideMenu);
 
     navigate('/home');
   };
@@ -19,35 +59,6 @@ const Login = () => {
   useEffect(() => {
     console.log(userStore, 909090909);
   }, []);
-
-  // const getMenuData = () => {
-  //   const menuData: any = [
-  //     {
-  //       id: 0,
-  //       menuCode: '100',
-  //       menuName: '驾驶舱',
-  //       path: '/dashboard',
-  //       icon: '',
-  //       children: []
-  //     },
-  //     {
-  //       id: 1,
-  //       menuCode: '200',
-  //       menuName: '系统设置',
-  //       path: '/',
-  //       icon: '',
-  //       children: [
-  //         {
-  //           id: 2,
-  //           menuCode: '200',
-  //           menuName: '系统设置',
-  //           path: '',
-  //           icon: ''
-  //         }
-  //       ]
-  //     }
-  //   ];
-  // };
 
   return (
     <div className={styles.login}>
