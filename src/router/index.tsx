@@ -19,6 +19,8 @@ const RouterTree = () => {
 
   const appRoutes = [...permissionRoutes, ...defaultRoutes];
 
+  console.log(appRoutes, 88888888888888);
+
   return useRoutes(appRoutes);
 };
 

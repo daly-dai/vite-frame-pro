@@ -41,6 +41,7 @@ const LayoutSider = () => {
   }, [location]);
 
   const asideMenu = useMemo(() => {
+    console.log(appState?.asideMenu, 'appState?.asideMenu');
     if (appState?.asideMenu && appState?.asideMenu.length) {
       return appState?.asideMenu;
     }
@@ -109,6 +110,7 @@ const LayoutSider = () => {
 
   return (
     <div className="sider">
+      {JSON.stringify(asideMenu)}
       <Menu
         defaultSelectedKeys={defaultSelectedKeys}
         onClick={clickAsideMenu}

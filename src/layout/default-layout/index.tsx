@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import LayoutHeader from '../components/LayoutHeader';
-import LayoutSider from '../components/LayoutSider';
 import './index.less';
-import LayoutBreadcrumb from '../components/LayoutBreadcrumb';
+import LayoutHeader from './components/LayoutHeader';
+import LayoutSider from './components/LayoutSider';
+import LayoutBreadcrumb from './components/LayoutBreadcrumb';
 
 export type Props = {
   children: React.ReactNode;
