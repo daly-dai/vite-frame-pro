@@ -2,9 +2,9 @@ import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import './index.less';
-import LayoutHeader from './components/LayoutHeader';
-import LayoutSider from './components/LayoutSider';
-import LayoutBreadcrumb from './components/LayoutBreadcrumb';
+import LayoutHeader from './components/Header';
+import LayoutSider from './components/Sider';
+import LayoutBreadcrumb from './components/Breadcrumb';
 
 export type Props = {
   children: React.ReactNode;
